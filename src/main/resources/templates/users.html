@@ -10,12 +10,16 @@
         <tr>
             <th>Username</th>
             <th>Email</th>
-			<th>userID</th>
+			<th>UserID</th>
+			<th>Phone</th>
+			<th>Role</th>
         </tr>
         <tr th:each="user : ${users}">
             <td th:text="${user.username}">Username</td>
             <td th:text="${user.email}">Email</td>
-			<td th:text="${user.userID}"></td>
+			<td th:text="${user.userID}">UserID</td>
+			<td th:text="${user.phone}">Phone</td>
+			<td th:text="${user.role}">Role</td>
         </tr>
     </table>
 </body>
