@@ -1,8 +1,13 @@
+
 package com.nomadnetwork.entity;
+import jakarta.validation.constraints.NotBlank;
 
 import com.nomadnetwork.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+
+
+
 
 @Data
 @NoArgsConstructor
@@ -20,6 +25,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @NotBlank(message= " email cannot be empty")
     @Column(unique = true, nullable = false)
     private String email;
 

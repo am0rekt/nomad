@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import jakarta.validation.*;
+import org.springframework.validation.BindingResult;
+
 
 @Controller
 public class UserViewController {
@@ -26,13 +29,16 @@ public class UserViewController {
     @GetMapping("/create-user")
     public String showCreateUserForm(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("roles", Role.values()); // use enum values
+        model.addAttribute("roles", Role.values()); // use enums values
         return "create_user";
     }
 
     
     @PostMapping("/create-user")
-    public String handleCreateUser(@ModelAttribute("user") User user) {
+    public String handleCreateUser(@Valid @ModelAttribute("user") User user,BindingResult result,Model model) {
+    	if(result.hasErrors()){
+    		return "create_user";
+    	}
         userService.saveUser(user);
         return "redirect:/user-page"; // After form submit, go to list
     }
