@@ -2,7 +2,11 @@ package com.nomadnetwork.services;
 
 import com.nomadnetwork.dto.PostDTO;
 import com.nomadnetwork.entity.Post;
+import com.nomadnetwork.postRepo.PostRepository;
 import com.nomadnetwork.repository.Postrepos;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,5 +65,16 @@ public class PostServiceImpl implements PostService {
 
         postDTO.setPostID(savedPost.getPostID());
         return postDTO;
+    }
+    
+    @Autowired
+    private PostRepository postRepository;
+    
+    @Override
+    @Transactional
+    public void deletePost(Long id) {
+    	postRepository.deleteById(id);
+    	
+    	
     }
 }

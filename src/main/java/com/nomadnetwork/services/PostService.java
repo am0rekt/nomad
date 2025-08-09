@@ -8,5 +8,6 @@ public interface PostService {
     List<PostDTO> getAllPost();
     PostDTO getPostById(Long id);
     PostDTO savePost(PostDTO postDTO);
+    void deletePost(Long id);
 }
 

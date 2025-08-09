@@ -17,7 +17,13 @@ public class Post {
     private String postUrl;
     private String title;
     private String content;
+    
     private LocalDateTime createdAt;
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
 
     // Getters and Setters
     public Long getPostID() {
@@ -26,6 +32,14 @@ public class Post {
 
     public void setPostID(Long postID) {
         this.postID = postID;
+    }
+    
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getPostUrl() {

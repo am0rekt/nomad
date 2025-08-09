@@ -2,11 +2,18 @@ package com.nomadnetwork.dto;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class PostDTO {
     private Long postID;
     private String postUrl;
+    
+    @NotBlank(message = "Title is required")
     private String title;
+    
+    @NotBlank(message = "Content is required")
     private String content;
+    
     private LocalDateTime createdAt;
 
     // Getters and Setters
