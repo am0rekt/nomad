@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -16,8 +17,19 @@ public class PostServiceImpl implements PostService {
     private Postrepos postRep;
 
     @Override
-    public List<Post> getAllPost() {
-        return postRep.findAll();
+    public List<PostDTO> getAllPost() {
+        return postRep.findAll()
+        .stream()
+        .map(post ->{
+            PostDTO dto = new PostDTO();
+            dto.setPostID(post.getPostID());
+            dto.setPostUrl(post.getPostUrl());
+            dto.setTitle(post.getTitle());
+            dto.setContent(post.getContent());
+            dto.setCreatedAt(post.getCreatedAt());
+            return dto;
+        })
+        .collect(Collectors.toList());
     }
 
     @Override

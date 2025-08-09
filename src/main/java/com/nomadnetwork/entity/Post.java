@@ -4,10 +4,15 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postID;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // optional: sets the DB column name
+    private User user;
 
     private String postUrl;
     private String title;
