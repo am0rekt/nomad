@@ -15,6 +15,8 @@ public class PostDTO {
     private String content;
     
     private LocalDateTime createdAt;
+    
+    private Long userId;
 
     // Getters and Setters
     public Long getPostID() {
@@ -23,6 +25,14 @@ public class PostDTO {
 
     public void setPostID(Long postID) {
         this.postID = postID;
+    }
+    
+    public Long getUserId() { 
+        return userId; 
+    }
+    
+    public void setUserId(Long userId) { 
+        this.userId = userId; 
     }
 
     public String getPostUrl() {

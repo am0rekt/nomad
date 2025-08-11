@@ -3,7 +3,10 @@ package com.nomadnetwork.postController;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,18 +23,29 @@ import com.nomadnetwork.services.PostService;
 @RestController
 @RequestMapping("/post")
 public class PostController {
-	@Autowired
-	private PostService postservice;
-	
-	@GetMapping("")
-	public List<PostDTO> getAllPosts() {
-	    return postservice.getAllPost();
-	}
-	
-	@PostMapping("")
-	public PostDTO createPost(@Valid @RequestBody PostDTO postDTO) {
-        return postservice.savePost(postDTO);
+
+    @Autowired
+    private PostService postService;
+
+    @GetMapping("")
+    public List<PostDTO> getAllPosts() {
+        return postService.getAllPost();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDTO> getPostById(@PathVariable Long id) {
+        PostDTO postDTO = postService.getPostById(id);
+        return ResponseEntity.ok(postDTO);
+    }
 
+    @PostMapping("")
+    public PostDTO createPost(@Valid @RequestBody PostDTO postDTO) {
+        return postService.savePost(postDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePost(@PathVariable Long id) {
+        postService.deletePost(id);
+        return ResponseEntity.ok("Post deleted successfully");
+    }
 }
