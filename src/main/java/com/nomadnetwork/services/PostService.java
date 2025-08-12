@@ -9,5 +9,7 @@ public interface PostService {
     PostDTO getPostById(Long id);
     PostDTO savePost(PostDTO postDTO);
     void deletePost(Long id);
+    public PostDTO updatePost(Long id, PostDTO postDTO);
+
 }
 

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+//import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,5 +91,29 @@ public class PostServiceImpl implements PostService {
     	    }
     	postRep.deleteById(id);
     	
+    }
+    
+    @Override
+    @Transactional
+    public PostDTO updatePost(Long id, PostDTO postDTO) {
+	    Post post = postRep.findById(id)
+	            .orElseThrow(() -> new PostNotFoundException(id));
+
+	    // Update fields
+	    post.setPostUrl(postDTO.getPostUrl());
+	    post.setTitle(postDTO.getTitle());
+	    post.setContent(postDTO.getContent());
+
+	    // Save and return updated DTO
+	    Post updatedPost = postRep.save(post);
+    	
+    	return new PostDTO(
+                updatedPost.getPostID(),
+                updatedPost.getPostUrl(),
+                updatedPost.getTitle(),
+                updatedPost.getContent(),
+                updatedPost.getCreatedAt(),
+                updatedPost.getUser().getUserID()
+        );
     }
 }
