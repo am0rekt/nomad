@@ -16,9 +16,6 @@ import jakarta.validation.Valid;
 
 
 import com.nomadnetwork.dto.PostDTO;
-//import com.nomadnetwork.dto.UserDTO;
-//import com.nomadnetwork.entity.Post;
-//import com.nomadnetwork.entity.User;
 import com.nomadnetwork.services.PostService;
 
 @RestController
