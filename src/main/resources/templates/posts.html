@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        a { color: blue; text-decoration: none; margin-right: 10px; }
+        a:hover { text-decoration: underline; }
+        .media-links { display: flex; flex-wrap: wrap; gap: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>Posts</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Loop through posts from the model -->
+        <tr th:each="post : ${postList}">
+            <td th:text="${post.postID}">1</td>
+            <td th:text="${post.title}">Sample Title</td>
+            <td th:text="${post.content}">Sample Content</td>
+            <td th:text="${post.createdAt != null ? #temporals.format(post.createdAt, 'dd-MM-yyyy HH:mm') : 'N/A'}">Sample Date</td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

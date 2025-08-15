@@ -1,4 +1,4 @@
-package mediaController;
+package com.nomadnetwork.controller;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import com.nomadnetwork.services.MediaService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/media")
+@RequestMapping("/api/media")
 public class MediaController {
 
     @Autowired

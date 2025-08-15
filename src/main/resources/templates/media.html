@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Media List</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { border-collapse: collapse; width: 80%; margin: 20px auto; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        a { color: blue; text-decoration: none; }
+    </style>
+</head>
+<body>
+<h2 style="text-align:center;">All Media</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>URL</th>
+        <th>Post ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="media : ${mediaList}">
+        <td th:text="${media.mediaID}"></td>
+        <td th:text="${media.type}"></td>
+        <td>
+            <a th:href="${media.url}" target="_blank" th:text="${media.url}"></a>
+        </td>
+        <td th:text="${media.postId}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
