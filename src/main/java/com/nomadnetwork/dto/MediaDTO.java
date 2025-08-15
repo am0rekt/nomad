@@ -16,6 +16,16 @@ public class MediaDTO {
 	    dto.setPostId(media.getPost().getPostID());
 	    return dto;
 	}
+	
+	public static MediaDTO fromEntity(Media media) {
+	    MediaDTO dto = new MediaDTO();
+	    dto.setMediaID(media.getMediaID());
+	    dto.setUrl(media.getUrl());
+	    dto.setType(media.getType().name()); // Enum to String
+	    dto.setPostId(media.getPost().getPostID()); // assuming Post has getPostID()
+	    return dto;
+	}
+
 
 	
 	

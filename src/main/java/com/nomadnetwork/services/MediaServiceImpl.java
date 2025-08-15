@@ -23,27 +23,31 @@ public class MediaServiceImpl implements MediaService {
 	}
 
 	@Override
-	@Transactional
-	public Media saveMedia(MediaDTO dto) {
-		Media media = Media.toEntity(dto, postRepo);
-		return mediaRepo.save(media);
-	}
+    @Transactional
+    public MediaDTO saveMedia(MediaDTO dto) {
+        Media media = Media.toEntity(dto, postRepo);
+        Media savedMedia = mediaRepo.save(media);
+        return MediaDTO.fromEntity(savedMedia);
+    }
 
-	@Override
-	public List<Media> getAllMedia() {
-		return mediaRepo.findAll();
-	}
+    @Override
+    public List<MediaDTO> getAllMedia() {
+        return mediaRepo.findAll()
+                .stream()
+                .map(MediaDTO::fromEntity)
+                .toList();
+    }
 
-	@Override
-	public Media getMediaById(Long id) {
-		return mediaRepo.findById(id)
+    @Override
+    public MediaDTO getMediaById(Long id) {
+        return mediaRepo.findById(id)
+                .map(MediaDTO::fromEntity)
                 .orElseThrow(() -> new RuntimeException("Media not found with ID: " + id));
-	}
+    }
 
-	@Override
-	@Transactional
-	public void deleteMedia(Long id) {
-		mediaRepo.deleteById(id);
-
-	}
+    @Override
+    @Transactional
+    public void deleteMedia(Long id) {
+        mediaRepo.deleteById(id);
+    }
 }

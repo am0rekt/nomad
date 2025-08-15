@@ -2,11 +2,10 @@ package com.nomadnetwork.services;
 
 import java.util.List;
 import com.nomadnetwork.dto.MediaDTO;
-import com.nomadnetwork.entity.Media;
 
 public interface MediaService {
-    Media saveMedia(MediaDTO dto);
-    List<Media> getAllMedia();
-    Media getMediaById(Long id);
+    MediaDTO saveMedia(MediaDTO dto);          // return DTO, not entity
+    List<MediaDTO> getAllMedia();               // return DTO list
+    MediaDTO getMediaById(Long id);             // return DTO
     void deleteMedia(Long id);
 }
