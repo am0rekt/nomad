@@ -6,7 +6,16 @@ import jakarta.validation.constraints.NotBlank;
 
 public class PostDTO {
     private Long postID;
-    private String postUrl;
+    private Long placeId;
+    public Long getPlaceId() {
+		return placeId;
+	}
+
+	public void setPlaceId(Long placeId) {
+		this.placeId = placeId;
+	}
+
+	private String postUrl;
     
     @NotBlank(message = "Title is required")
     private String title;

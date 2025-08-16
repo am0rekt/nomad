@@ -1,12 +1,18 @@
 package com.nomadnetwork.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
+@Entity
+@Getter
+@Setter
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +21,12 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // optional: sets the DB column name
     private User user;
+    
+    @ManyToOne
+    @JoinColumn(name = "place_id")
+    @JsonBackReference
+    private Place place;
+
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Media> mediaList = new ArrayList<>();
@@ -30,52 +42,5 @@ public class Post {
     }
 
 
-    // Getters and Setters
-    public Long getPostID() {
-        return postID;
-    }
-
-    public void setPostID(Long postID) {
-        this.postID = postID;
-    }
-    
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getPostUrl() {
-        return postUrl;
-    }
-
-    public void setPostUrl(String postUrl) {
-        this.postUrl = postUrl;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+   
 }

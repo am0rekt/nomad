@@ -3,6 +3,7 @@ package com.nomadnetwork.services;
 import com.nomadnetwork.dto.PostDTO;
 import com.nomadnetwork.entity.Post;
 import com.nomadnetwork.exception.PostNotFoundException;
+import com.nomadnetwork.placeRepo.PlaceRepo;
 import com.nomadnetwork.repository.Postrepos;
 import com.nomadnetwork.entity.User;
 import com.nomadnetwork.userRepo.UserRepos;
@@ -24,6 +25,10 @@ public class PostServiceImpl implements PostService {
     
     @Autowired
     private UserRepos userRepository;
+    
+    @Autowired
+    private PlaceRepo placeRepository;
+
 
     @Override
     public List<PostDTO> getAllPost() {
@@ -37,6 +42,11 @@ public class PostServiceImpl implements PostService {
                     dto.setCreatedAt(post.getCreatedAt());
                     if (post.getUser() != null) {
                         dto.setUserId(post.getUser().getUserID());
+                    }
+                    if (post.getPlace() != null) {
+                        dto.setPlaceId(post.getPlace().getPlaceID());
+                    
+                        
                     }
                     return dto;
                 })
@@ -55,10 +65,19 @@ public class PostServiceImpl implements PostService {
         dto.setTitle(post.getTitle());
         dto.setContent(post.getContent());
         dto.setCreatedAt(post.getCreatedAt());
-        dto.setUserId(post.getUser().getUserID()); // if you want userId too
+
+        if (post.getUser() != null) {
+            dto.setUserId(post.getUser().getUserID());
+        }
+
+        if (post.getPlace() != null) {
+            dto.setPlaceId(post.getPlace().getPlaceID());
+        }
+
         
         return dto;
     }
+
 
 
     @Override
