@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Post</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h1 th:text="${post.title}"></h1>
+
+    <p><strong>Post ID:</strong> <span th:text="${post.postID}"></span></p>
+    <p><strong>Created At:</strong> <span th:text="${#temporals.format(post.createdAt, 'dd-MM-yyyy HH:mm')}"></span></p>
+    <p><strong>Content:</strong></p>
+    <p th:text="${post.content}"></p>
+
+    <div th:if="${post.postUrl}">
+        <p><strong>Post URL:</strong>
+            <a th:href="${post.postUrl}" target="_blank" th:text="${post.postUrl}"></a>
+        </p>
+    </div>
+
+    <a th:href="@{/posts}">⬅ Back to Posts</a>
+</body>
+</html>
+
+

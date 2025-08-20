@@ -16,25 +16,25 @@ import com.nomadnetwork.services.PlaceService;
 @RequestMapping("/api/places")
 public class PlaceController {
 
-    private final PlaceService placeService;
+	private final PlaceService placeService;
 
-    public PlaceController(PlaceService placeService) {
-        this.placeService = placeService;
-    }
+	public PlaceController(PlaceService placeService) {
+		this.placeService = placeService;
+	}
 
-    @GetMapping
-    public List<PlaceDTO> getAllPlaces() {
-        return placeService.getAllPlaces();
-    }
+	@GetMapping
+	public List<PlaceDTO> getAllPlaces() {
+		return placeService.getAllPlaces();
+	}
 
-    @GetMapping("/{id}")
-    public PlaceDTO getPlaceById(@PathVariable Long id) {
-        return placeService.getPlaceById(id);
-    }
-    
-    @PostMapping
-    public PlaceDTO createPlace(@RequestBody PlaceDTO placeDTO) {
-        return placeService.createPlace(placeDTO);
-    }
+	@GetMapping("/{id}")
+	public PlaceDTO getPlaceById(@PathVariable Long id) {
+		return placeService.getPlaceById(id);
+	}
+
+	@PostMapping
+	public PlaceDTO createPlace(@RequestBody PlaceDTO placeDTO) {
+		return placeService.createPlace(placeDTO);
+	}
 
 }

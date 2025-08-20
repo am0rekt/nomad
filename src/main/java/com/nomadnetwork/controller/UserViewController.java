@@ -13,29 +13,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserViewController {
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    @GetMapping("/user-page")
-    public String showUserPage(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "users"; // Refers to users.html
-    }
-    
+	@GetMapping("/user-page")
+	public String showUserPage(Model model) {
+		model.addAttribute("users", userService.getAllUsers());
+		return "users"; // Refers to users.html
+	}
 
-    @GetMapping("/create-user")
-    public String showCreateUserForm(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", Role.values()); // use enum values
-        return "create_user";
-    }
+	@GetMapping("/create-user")
+	public String showCreateUserForm(Model model) {
+		model.addAttribute("user", new User());
+		model.addAttribute("roles", Role.values()); // use enum values
+		return "create_user";
+	}
 
-    
-    @PostMapping("/create-user")
-    public String handleCreateUser(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
-        return "redirect:/user-page"; // After form submit, go to list
-    }
-
+	@PostMapping("/create-user")
+	public String handleCreateUser(@ModelAttribute("user") User user) {
+		userService.saveUser(user);
+		return "redirect:/user-page"; // After form submit, go to list
+	}
 
 }

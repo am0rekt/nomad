@@ -31,7 +31,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Media> mediaList = new ArrayList<>();
     
+    @Column(name = "post_url")
     private String postUrl;
+    
     private String title;
     private String content;
     

@@ -22,28 +22,28 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/media")
 public class MediaController {
 
-    @Autowired
-    private MediaService mediaService;
+	@Autowired
+	private MediaService mediaService;
 
-    @PostMapping("")
-    public ResponseEntity<MediaDTO> saveMedia(@Valid @RequestBody MediaDTO mediaDTO) {
-        MediaDTO savedMediaDTO = mediaService.saveMedia(mediaDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedMediaDTO);
-    }
+	@PostMapping("")
+	public ResponseEntity<MediaDTO> saveMedia(@Valid @RequestBody MediaDTO mediaDTO) {
+		MediaDTO savedMediaDTO = mediaService.saveMedia(mediaDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedMediaDTO);
+	}
 
-    @GetMapping("")
-    public List<MediaDTO> getAllMedia() {
-        return mediaService.getAllMedia();
-    }
+	@GetMapping("")
+	public List<MediaDTO> getAllMedia() {
+		return mediaService.getAllMedia();
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MediaDTO> getMediaById(@PathVariable Long id) {
-        return ResponseEntity.ok(mediaService.getMediaById(id));
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<MediaDTO> getMediaById(@PathVariable Long id) {
+		return ResponseEntity.ok(mediaService.getMediaById(id));
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMedia(@PathVariable Long id) {
-        mediaService.deleteMedia(id);
-        return ResponseEntity.noContent().build();
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteMedia(@PathVariable Long id) {
+		mediaService.deleteMedia(id);
+		return ResponseEntity.noContent().build();
+	}
 }

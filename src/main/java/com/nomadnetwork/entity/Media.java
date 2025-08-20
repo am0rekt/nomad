@@ -12,7 +12,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 public class Media {
     @Id
@@ -21,37 +25,7 @@ public class Media {
 
     private String url;
 
-    public Long getMediaID() {
-		return mediaID;
-	}
-
-	public void setMediaID(Long mediaID) {
-		this.mediaID = mediaID;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public MediaType getType() {
-		return type;
-	}
-
-	public void setType(MediaType type) {
-		this.type = type;
-	}
-
-	public Post getPost() {
-		return post;
-	}
-
-	public void setPost(Post post) {
-		this.post = post;
-	}
+    
 
 	@Enumerated(EnumType.STRING)
     private MediaType type; // VIDEO, IMAGE, etc.

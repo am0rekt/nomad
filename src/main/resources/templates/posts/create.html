@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Post</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Page Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: #fdfdfd;
+            transition: 0.2s ease-in-out;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        textarea:focus {
+            border-color: #3c8dbc;
+            outline: none;
+            box-shadow: 0 0 5px rgba(60, 141, 188, 0.5);
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            background-color: #3c8dbc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-size: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2d6a8e;
+        }
+
+        .cancel-btn {
+            background-color: #f44336;
+        }
+
+        .cancel-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Create New Post</h1>
+
+    <form th:action="@{/posts}" th:object="${post}" method="post">
+        <!-- Title -->
+        <label for="title">Title</label>
+        <input type="text" id="title" th:field="*{title}" placeholder="Enter post title" required>
+
+        <!-- Description -->
+        <label for="description">Description</label>
+        <textarea id="description" th:field="*{description}" placeholder="Enter post description" required></textarea>
+
+        <!-- Post URL -->
+        <label for="postUrl">Post URL</label>
+        <input type="url" id="postUrl" th:field="*{postUrl}" placeholder="https://example.com" required>
+
+        <!-- Buttons -->
+        <div class="button-group">
+            <button type="submit">Create Post</button>
+            <a th:href="@{/posts}" style="text-decoration:none;">
+                <button type="button" class="cancel-btn">Cancel</button>
+            </a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+
+

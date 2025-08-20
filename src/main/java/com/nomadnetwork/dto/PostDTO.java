@@ -1,19 +1,20 @@
 package com.nomadnetwork.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.nomadnetwork.entity.User;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class PostDTO {
     private Long postID;
     private Long placeId;
-    public Long getPlaceId() {
-		return placeId;
-	}
-
-	public void setPlaceId(Long placeId) {
-		this.placeId = placeId;
-	}
+    private List<String> mediaUrls;
 
 	private String postUrl;
     
@@ -27,6 +28,8 @@ public class PostDTO {
     
     private Long userId;
     
+    private User user;
+    
     public PostDTO() {}
     
     public PostDTO(Long postID, String postUrl, String title, String content, LocalDateTime createdAt, Long userId) {
@@ -38,52 +41,5 @@ public class PostDTO {
         this.userId = userId;
     }
 
-    // Getters and Setters
-    public Long getPostID() {
-        return postID;
-    }
-
-    public void setPostID(Long postID) {
-        this.postID = postID;
-    }
-    
-    public Long getUserId() { 
-        return userId; 
-    }
-    
-    public void setUserId(Long userId) { 
-        this.userId = userId; 
-    }
-
-    public String getPostUrl() {
-        return postUrl;
-    }
-
-    public void setPostUrl(String postUrl) {
-        this.postUrl = postUrl;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+   
 }

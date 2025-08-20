@@ -9,6 +9,7 @@ public class PlaceDTO {
     private Double latitude;
     private Double longitude;
     private String description;
+    
 
 
     public Long getPlaceId() {
