@@ -55,6 +55,14 @@ public class PlaceServiceImpl implements PlaceService {
 
 	     return convertToDTO(saved);
 	 }
+	 
+	 @Override
+	    public List<PlaceDTO> searchPlaces(String keyword) {
+	        return placeRepository.findByNameContainingIgnoreCase(keyword)
+	                              .stream()
+	                              .map(this::convertToDTO)
+	                              .toList();
+	    }
 
 
 }

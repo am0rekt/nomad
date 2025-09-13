@@ -12,8 +12,7 @@
         <a class="navbar-brand" href="/">Nomad Network</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="/posts">Posts</a></li>
-                <li class="nav-item"><a class="nav-link" href="/media">Media</a></li>
+               
             </ul>
         </div>
     </div>
@@ -24,6 +23,14 @@
     <p class="lead">Connecting travelers with real experiences, tips, and insights.</p>
 
     <div class="mt-4">
+		<form th:action="@{/places/search}" method="get" class="flex justify-center mt-6">
+		    <input type="text" name="keyword" placeholder="Search a place..."
+		           class="border rounded-l px-4 py-2 w-1/2" required>
+		    <button type="submit" 
+		            class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600">
+		        Search
+		    </button>
+		</form>
         <a href="/posts" class="btn btn-primary btn-lg me-2">View Posts</a>
         <a href="/media" class="btn btn-success btn-lg">View Media</a>
     </div>

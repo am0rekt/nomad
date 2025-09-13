@@ -9,5 +9,9 @@ public interface PlaceService {
 	 public List<PlaceDTO> getAllPlaces();
 	 public PlaceDTO getPlaceById(Long id);
 	 PlaceDTO createPlace(PlaceDTO placeDTO);
+	 public List<PlaceDTO> searchPlaces(String keyword);
+		  
+		
+
 
 }
