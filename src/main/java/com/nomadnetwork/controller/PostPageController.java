@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.nomadnetwork.dto.PostDTO;
+import com.nomadnetwork.services.PlaceService;
 import com.nomadnetwork.services.PostService;
 
 @Controller
@@ -18,6 +19,8 @@ public class PostPageController {
 
     @Autowired
     private PostService postService;
+    @Autowired
+    private PlaceService placeService;
     
     @GetMapping
     public String listPosts(Model model) {
@@ -36,7 +39,8 @@ public class PostPageController {
     // ✅ Show create post form
     @GetMapping("/create")
     public String showCreatePostForm(Model model) {
-        model.addAttribute("post", new PostDTO()); // Using PostDTO, not Post entity
+        model.addAttribute("post", new PostDTO());
+        model.addAttribute("places", placeService.getAllPlaces());// Using PostDTO, not Post entity
         return "posts/create-post";  // templates/posts/create-post.html
     }
 

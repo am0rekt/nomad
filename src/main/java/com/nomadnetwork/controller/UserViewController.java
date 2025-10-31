@@ -32,7 +32,7 @@ public class UserViewController {
 	@PostMapping("/create-user")
 	public String handleCreateUser(@ModelAttribute("user") User user) {
 		userService.saveUser(user);
-		return "redirect:/user-page"; // After form submit, go to list
+		return "redirect:/users"; // After form submit, go to list
 	}
 
 }

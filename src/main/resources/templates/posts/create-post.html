@@ -53,7 +53,8 @@
         
         input[type="text"],
         input[type="url"],
-        textarea {
+        textarea,
+        select {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e8ecf3;
@@ -65,7 +66,8 @@
         
         input[type="text"]:focus,
         input[type="url"]:focus,
-        textarea:focus {
+        textarea:focus,
+        select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
@@ -140,6 +142,17 @@
             <div class="form-group">
                 <label for="postUrl">🔗 URL (Optional):</label>
                 <input type="url" id="postUrl" th:field="*{postUrl}" placeholder="https://example.com">
+            </div>
+
+            <!-- ✅ Place Dropdown -->
+            <div class="form-group">
+                <label for="place">📍 Select Place:</label>
+                <select id="place" th:field="*{placeId}" required>
+                    <option value="" disabled selected>-- Choose a place --</option>
+                    <option th:each="place : ${places}" 
+                            th:value="${place.placeId}" 
+                            th:text="${place.name}"></option>
+                </select>
             </div>
 
             <button type="submit" class="submit-btn">🚀 Create Post</button>

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.nomadnetwork.dto.PlaceDTO;
 import com.nomadnetwork.entity.Place;
-import com.nomadnetwork.placeRepo.PlaceRepo;
+import com.nomadnetwork.repository.PlaceRepo;
 
 @Service
 public class PlaceServiceImpl implements PlaceService {

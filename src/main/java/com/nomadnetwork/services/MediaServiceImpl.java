@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.nomadnetwork.dto.MediaDTO;
 import com.nomadnetwork.entity.Media;
-import com.nomadnetwork.mediaRepo.MediaRepo;
-import com.nomadnetwork.postRepo.PostRepository;
+import com.nomadnetwork.repository.MediaRepo;
+import com.nomadnetwork.repository.Postrepos;
 
 import jakarta.transaction.Transactional;
 
@@ -15,9 +15,9 @@ import jakarta.transaction.Transactional;
 public class MediaServiceImpl implements MediaService {
 
 	private final MediaRepo mediaRepo;
-	private final PostRepository postRepo;
+	private final Postrepos postRepo;
 
-	public MediaServiceImpl(MediaRepo mediaRepo, PostRepository postRepo) {
+	public MediaServiceImpl(MediaRepo mediaRepo, Postrepos postRepo) {
 		this.mediaRepo = mediaRepo;
 		this.postRepo = postRepo;
 	}

@@ -28,6 +28,8 @@ public class PostDTO {
     
     private Long userId;
     
+
+    
     private User user;
     
     public PostDTO() {}

@@ -2,7 +2,7 @@ package com.nomadnetwork.entity;
 
 import com.nomadnetwork.dto.MediaDTO;
 import com.nomadnetwork.enums.MediaType;
-import com.nomadnetwork.postRepo.PostRepository;
+import com.nomadnetwork.repository.Postrepos;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,7 +34,7 @@ public class Media {
     @JoinColumn(name = "post_id") // Foreign key to Post
     private Post post;
 
-    public static Media toEntity(MediaDTO dto, PostRepository postRepo) {
+    public static Media toEntity(MediaDTO dto, Postrepos postRepo) {
         Media media = new Media();
         media.setMediaID(dto.getMediaID());
         media.setUrl(dto.getUrl());

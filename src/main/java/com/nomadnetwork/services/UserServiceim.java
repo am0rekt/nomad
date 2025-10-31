@@ -1,8 +1,12 @@
 package com.nomadnetwork.services;
 
+import com.nomadnetwork.dto.UserRegistrationDTO;
 import com.nomadnetwork.entity.User;
-import com.nomadnetwork.userRepo.UserRepos;
+import com.nomadnetwork.enums.Role;
+import com.nomadnetwork.repository.UserRepos;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,8 +14,11 @@ import java.util.List;
 @Service
 public class UserServiceim implements UserService {
 
-    @Autowired
-    private UserRepos userRepo;
+	@Autowired
+    private  UserRepos userRepo ;
+    private  PasswordEncoder passwordEncoder;
+    
+
 
     @Override
     public List<User> getAllUsers() {
@@ -22,4 +29,32 @@ public class UserServiceim implements UserService {
     public User saveUser(User user) {
         return userRepo.save(user);
     }
+
+	@Override
+	public User registerUser(UserRegistrationDTO dto) {
+		if (userRepo.findByEmail(dto.getEmail()).isPresent()) {// to check if email already exits
+	        throw new RuntimeException("Email already registered: " + dto.getEmail());
+	    }
+		
+		if (!dto.getPassword().equals(dto.getConfirmPassword())) {
+	        throw new RuntimeException("Passwords do not match!");//for password conformation
+	    }
+		
+		User user = new User();
+	    user.setUsername(dto.getUsername());
+	    user.setEmail(dto.getEmail());
+	    user.setPhone(dto.getPhone());
+	    
+	    user.setPassword(passwordEncoder.encode(dto.getPassword()));
+	    
+	    user.setRole(Role.USER);
+		
+		return userRepo.save(user);
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		return userRepo.findByEmail(email)
+				.orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+	}
 }

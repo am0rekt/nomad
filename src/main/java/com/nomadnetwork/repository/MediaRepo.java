@@ -1,4 +1,4 @@
-package com.nomadnetwork.mediaRepo;
+package com.nomadnetwork.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.nomadnetwork.entity.Media;

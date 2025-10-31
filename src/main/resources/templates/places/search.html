@@ -3,28 +3,72 @@
 <head>
     <title>Search Results</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body class="bg-gray-100">
-    <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-4">
-            Results for "<span th:text="${keyword}"></span>"
-        </h1>
+  <div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">
+      Results for "<span th:text="${keyword}"></span>"
+    </h1>
 
-        <div th:if="${#lists.isEmpty(results)}" class="text-gray-500">
-            No places found.
-        </div>
+    <div id="map" class="w-full h-96 mt-8 rounded shadow"></div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" th:if="${!#lists.isEmpty(results)}">
-            <div th:each="place : ${results}" class="bg-white p-4 rounded shadow">
-                <h2 class="text-xl font-semibold mb-2" th:text="${place.name}"></h2>
-                <p class="text-gray-700" th:text="${place.description}"></p>
-            </div>
-        </div>
-
-        <div class="mt-6">
-            <a th:href="@{/
-}" class="text-blue-500 hover:underline">← Back to Home</a>
-        </div>
+    <div th:if="${#lists.isEmpty(results)}" class="text-gray-500">
+      No places found.
     </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" 
+         th:if="${!#lists.isEmpty(results)}">
+      <div th:each="place : ${results}"
+           class="bg-white p-4 rounded shadow"
+           th:attr="data-lat=${place.latitude}, 
+                    data-lon=${place.longitude}, 
+                    data-name=${place.name}, 
+                    data-desc=${place.description}">
+        <h2 class="text-xl font-semibold mb-2" th:text="${place.name}"></h2>
+        <p class="text-gray-700" th:text="${place.description}"></p>
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <a th:href="@{/}" class="text-blue-500 hover:underline">← Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const placeDivs = document.querySelectorAll("[data-lat]");
+      if (placeDivs.length === 0) return;
+
+      const first = placeDivs[0];
+      const lat = parseFloat(first.dataset.lat);
+      const lon = parseFloat(first.dataset.lon);
+
+      var map = L.map('map').setView([lat, lon], 10);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      const markers = [];
+
+      placeDivs.forEach(div => {
+        const lat = parseFloat(div.dataset.lat);
+        const lon = parseFloat(div.dataset.lon);
+        const name = div.dataset.name;
+        const desc = div.dataset.desc;
+
+        const marker = L.marker([lat, lon])
+          .addTo(map)
+          .bindPopup(`<b>${name}</b><br>${desc}`);
+        markers.push(marker);
+      });
+
+      // Fit all markers into view
+      const group = new L.featureGroup(markers);
+      
+    });
+  </script>
 </body>
 </html>

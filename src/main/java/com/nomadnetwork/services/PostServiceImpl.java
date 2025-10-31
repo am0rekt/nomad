@@ -13,10 +13,10 @@ import com.nomadnetwork.entity.Post;
 import com.nomadnetwork.entity.User;
 import com.nomadnetwork.enums.MediaType;
 import com.nomadnetwork.exception.PostNotFoundException;
-import com.nomadnetwork.mediaRepo.MediaRepo;
-import com.nomadnetwork.placeRepo.PlaceRepo;
+import com.nomadnetwork.repository.MediaRepo;
+import com.nomadnetwork.repository.PlaceRepo;
 import com.nomadnetwork.repository.Postrepos;
-import com.nomadnetwork.userRepo.UserRepos;
+import com.nomadnetwork.repository.UserRepos;
 
 import jakarta.transaction.Transactional;
 

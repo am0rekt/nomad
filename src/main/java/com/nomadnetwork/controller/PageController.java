@@ -41,7 +41,7 @@ public class PageController {
         List<PlaceDTO> results = placeService.searchPlaces(keyword);
         model.addAttribute("results", results);
         model.addAttribute("keyword", keyword);
-        return "places/search";  // You’ll create this HTML
+        return "places/search";  //search html
     }
 
 }
