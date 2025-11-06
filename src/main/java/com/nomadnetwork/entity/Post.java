@@ -35,7 +35,12 @@ public class Post {
     private String postUrl;
     
     private String title;
-    private String content;
+    private String content; 
+    private String name;
+    private String description;
+    private String imageName;
+    private String imagePath;
+    private String imageType;
     
     private LocalDateTime createdAt;
     @PrePersist

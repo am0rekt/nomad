@@ -20,6 +20,7 @@ public class PostDTO {
     
     @NotBlank(message = "Title is required")
     private String title;
+    private String Description;
     
     @NotBlank(message = "Content is required")
     private String content;
@@ -27,6 +28,10 @@ public class PostDTO {
     private LocalDateTime createdAt;
     
     private Long userId;
+    private String imageName;
+    private String imagePath;
+    private String imageType;
+
     
 
     

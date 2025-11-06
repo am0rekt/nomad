@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.nomadnetwork.dto.PostDTO;
 import com.nomadnetwork.services.PlaceService;
 import com.nomadnetwork.services.PostService;
@@ -45,11 +48,15 @@ public class PostPageController {
     }
 
     @PostMapping("/create")
-    public String createPost(@ModelAttribute("post") PostDTO postDTO) {
+    public String createPost(
+            @ModelAttribute("post") PostDTO postDTO,
+            @RequestParam(value = "image", required = false) MultipartFile image) {
+
         // ✅ Set default user ID temporarily
         postDTO.setUserId(1L);
 
-        postService.savePost(postDTO);
+        // ✅ Pass both postDTO and uploaded file
+        postService.savePost(postDTO, image);
 
         return "redirect:/posts";
     }

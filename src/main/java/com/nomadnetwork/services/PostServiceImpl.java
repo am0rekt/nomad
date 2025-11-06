@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nomadnetwork.dto.PostDTO;
 import com.nomadnetwork.entity.Media;
@@ -34,6 +35,9 @@ public class PostServiceImpl implements PostService {
     
     @Autowired
     private PlaceRepo placeRepo;
+    
+    @Autowired
+    private FileStorageServiceImpl fileStorageService;
     
     @Override
     public List<PostDTO> getAllPost() {
@@ -101,10 +105,11 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostDTO savePost(PostDTO postDTO) {
+    public PostDTO savePost(PostDTO postDTO,MultipartFile image) {
         Post post = new Post();
         post.setPostUrl(postDTO.getPostUrl());
         post.setTitle(postDTO.getTitle());
+        post.setDescription(postDTO.getDescription());
         post.setContent(postDTO.getContent());
         post.setCreatedAt(LocalDateTime.now());
 
@@ -134,6 +139,14 @@ public class PostServiceImpl implements PostService {
                 media.setPost(savedPost);
                 mediaRepo.save(media);
             }
+        }
+        if (image != null && !image.isEmpty()) {
+            String imagePath = fileStorageService.saveFile(image);
+            Media media = new Media();
+            media.setUrl(imagePath);
+            media.setType(MediaType.IMAGE);
+            media.setPost(savedPost);
+            mediaRepo.save(media);
         }
 
         // ✅ Return the saved DTO
