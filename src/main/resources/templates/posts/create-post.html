@@ -17,14 +17,11 @@
     <label>Content:</label><br>
     <textarea name="content" placeholder="Enter detailed content..."></textarea><br><br>
 
-    <label>Place:</label><br>
-    <select name="placeId" required>
-        <option value="">-- Select a Place --</option>
-        <option th:each="place : ${places}" 
-                th:value="${place.placeId}" 
-                th:text="${place.name}">
-        </option>
-    </select><br><br>
+    <label>Place Name:</label><br>
+    <input type="text" name="placeName" placeholder="Enter place name"><br><br>
+
+    <label>Country:</label><br>
+    <input type="text" name="country" placeholder="Enter country"><br><br>
 
     <label>Upload Image:</label><br>
     <input type="file" name="image"><br><br>

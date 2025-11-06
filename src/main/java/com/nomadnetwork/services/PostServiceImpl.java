@@ -15,7 +15,6 @@ import com.nomadnetwork.entity.User;
 import com.nomadnetwork.enums.MediaType;
 import com.nomadnetwork.exception.PostNotFoundException;
 import com.nomadnetwork.repository.MediaRepo;
-import com.nomadnetwork.repository.PlaceRepo;
 import com.nomadnetwork.repository.Postrepos;
 import com.nomadnetwork.repository.UserRepos;
 
@@ -34,7 +33,7 @@ public class PostServiceImpl implements PostService {
     private MediaRepo mediaRepo;
     
     @Autowired
-    private PlaceRepo placeRepo;
+    private PlaceServiceImpl placeService;
     
     @Autowired
     private FileStorageServiceImpl fileStorageService;
@@ -121,9 +120,8 @@ public class PostServiceImpl implements PostService {
         }
 
         // ✅ Set place if provided
-        if (postDTO.getPlaceId() != null) {
-            Place place = placeRepo.findById(postDTO.getPlaceId())
-                    .orElseThrow(() -> new RuntimeException("Place not found"));
+        if (postDTO.getPlaceName() != null && postDTO.getCountry() != null) {
+            Place place = placeService.findOrCreatePlace(postDTO.getPlaceName(), postDTO.getCountry());
             post.setPlace(place);
         }
 

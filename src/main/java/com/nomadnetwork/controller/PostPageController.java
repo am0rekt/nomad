@@ -1,6 +1,14 @@
 package com.nomadnetwork.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,10 +60,33 @@ public class PostPageController {
             @ModelAttribute("post") PostDTO postDTO,
             @RequestParam(value = "image", required = false) MultipartFile image) {
 
-        // ✅ Set default user ID temporarily
+        // ✅ Temporarily set default user
         postDTO.setUserId(1L);
 
-        // ✅ Pass both postDTO and uploaded file
+        // ✅ Handle image upload (only if image is provided)
+        if (image != null && !image.isEmpty()) {
+            try {
+                // Create uploads directory if not exists
+                Path uploadDir = Paths.get("uploads/places").toAbsolutePath().normalize();
+                Files.createDirectories(uploadDir);
+
+                // Generate unique filename
+                String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+                Path targetLocation = uploadDir.resolve(fileName);
+
+                // Copy the file to the uploads directory
+                Files.copy(image.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+                // ✅ Store both the filesystem path and web-accessible path
+                postDTO.setImageName(fileName);
+                postDTO.setImagePath("uploads/places/" + fileName);
+                postDTO.setPostUrl("/uploads/places/" + fileName); // 🔗 public URL to access the image
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // ✅ Save post (with or without image)
         postService.savePost(postDTO, image);
 
         return "redirect:/posts";

@@ -14,6 +14,8 @@ import lombok.Setter;
 public class PostDTO {
     private Long postID;
     private Long placeId;
+    private String placeName;  
+    private String country; 
     private List<String> mediaUrls;
 
 	private String postUrl;

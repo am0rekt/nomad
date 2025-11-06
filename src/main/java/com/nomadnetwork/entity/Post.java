@@ -26,6 +26,10 @@ public class Post {
     @JoinColumn(name = "place_id")
     @JsonBackReference
     private Place place;
+    
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Media> media;
+
 
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)

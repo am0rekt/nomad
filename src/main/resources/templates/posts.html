@@ -28,12 +28,16 @@
     </thead>
     <tbody>
         <!-- Loop through posts from the model -->
-        <tr th:each="post : ${postList}">
-            <td th:text="${post.postID}">1</td>
-            <td th:text="${post.title}">Sample Title</td>
-            <td th:text="${post.content}">Sample Content</td>
-            <td th:text="${post.createdAt != null ? #temporals.format(post.createdAt, 'dd-MM-yyyy HH:mm') : 'N/A'}">Sample Date</td>
-        </tr>
+		<tr th:each="post : ${posts}">
+		    <td th:text="${post.title}"></td>
+		    <td th:text="${post.description}"></td>
+		    <td>
+		        <img th:if="${post.postUrl != null}"
+		             th:src="@{${post.postUrl}}"
+		             alt="Post image"
+		             style="width: 200px; height: auto; border-radius: 10px;" />
+		    </td>
+		</tr>
     </tbody>
 </table>
 

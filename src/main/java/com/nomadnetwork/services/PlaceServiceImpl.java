@@ -1,6 +1,7 @@
 package com.nomadnetwork.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,4 +66,22 @@ public class PlaceServiceImpl implements PlaceService {
 	    }
 
 
+	 @Override
+	 	public Place findOrCreatePlace(String name,String country){
+		 String normalizedName = name.trim();
+		 String normalizedCountry = country.trim();
+		 
+		 Optional<Place> existingPlace = placeRepository
+		            .findByNameIgnoreCaseAndCountryIgnoreCase(normalizedName, normalizedCountry);
+		 if (existingPlace.isPresent()) {
+		        return existingPlace.get();
+		    }
+		 
+		 Place newPlace = new Place();
+		    newPlace.setName(normalizedName);
+		    newPlace.setCountry(normalizedCountry);
+		    
+		 return placeRepository.save(newPlace);
+	 }
+	 
 }

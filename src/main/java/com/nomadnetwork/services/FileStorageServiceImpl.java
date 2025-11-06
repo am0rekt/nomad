@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 public class FileStorageServiceImpl implements FileStorageService{
 
-    private final String uploadDir = "uploads/places/";
+    private final String uploadDir = "uploads/places";
 
     public String saveFile(MultipartFile file) {
     	try {
