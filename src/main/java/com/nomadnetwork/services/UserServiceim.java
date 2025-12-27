@@ -6,6 +6,7 @@ import com.nomadnetwork.enums.Role;
 import com.nomadnetwork.repository.UserRepos;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +59,23 @@ public class UserServiceim implements UserService {
 	public User findByEmail(String email) {
 		return userRepo.findByEmail(email)
 				.orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+	}
+	@Override
+	public User getCurrentUser() {
+	    String email = SecurityContextHolder.getContext()
+	                    .getAuthentication().getName();
+	    return userRepo.findByEmail(email)
+	            .orElseThrow();
+	}
+
+	@Override
+	public void updateProfile(User form) {
+	    User user = getCurrentUser();
+
+	    user.setUsername(form.getUsername());
+	    user.setPhone(form.getPhone());
+	    user.setBio(form.getBio());
+
+	    userRepo.save(user);
 	}
 }

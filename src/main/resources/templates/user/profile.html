@@ -1,0 +1,17 @@
+<h2>My Profile</h2>
+
+<form th:action="@{/profile}" method="post" th:object="${user}">
+    <input type="text" th:field="*{username}" placeholder="Username" />
+
+    <input type="email" th:value="${user.email}" readonly />
+
+    <input type="text" th:field="*{phone}" placeholder="Phone" />
+
+    <textarea th:field="*{bio}" placeholder="Bio"></textarea>
+
+    <button type="submit">Update</button>
+</form>
+
+<p th:if="${param.updated}" style="color:green">
+    Profile updated successfully
+</p>

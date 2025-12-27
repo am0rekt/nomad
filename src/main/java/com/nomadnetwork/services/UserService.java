@@ -9,4 +9,6 @@ public interface UserService {
     User saveUser(User user);
     User registerUser(UserRegistrationDTO dto);  // registration workflow
     User findByEmail(String email);
+    User getCurrentUser();
+    void updateProfile(User updatedUser);
 }
