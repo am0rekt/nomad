@@ -16,6 +16,8 @@ public class UserServiceim implements UserService {
 
 	@Autowired
     private  UserRepos userRepo ;
+	
+	@Autowired
     private  PasswordEncoder passwordEncoder;
     
 
@@ -32,24 +34,24 @@ public class UserServiceim implements UserService {
 
 	@Override
 	public User registerUser(UserRegistrationDTO dto) {
-		if (userRepo.findByEmail(dto.getEmail()).isPresent()) {// to check if email already exits
-	        throw new RuntimeException("Email already registered: " + dto.getEmail());
-	    }
-		
-		if (!dto.getPassword().equals(dto.getConfirmPassword())) {
-	        throw new RuntimeException("Passwords do not match!");//for password conformation
-	    }
-		
-		User user = new User();
-	    user.setUsername(dto.getUsername());
-	    user.setEmail(dto.getEmail());
-	    user.setPhone(dto.getPhone());
-	    
-	    user.setPassword(passwordEncoder.encode(dto.getPassword()));
-	    
-	    user.setRole(Role.USER);
-		
-		return userRepo.save(user);
+		if (userRepo.findByEmail(dto.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already registered: " + dto.getEmail());
+        }
+
+        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match!");
+        }
+
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setPhone(dto.getPhone());
+
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        user.setRole(Role.USER);
+
+        return userRepo.save(user);
 	}
 
 	@Override

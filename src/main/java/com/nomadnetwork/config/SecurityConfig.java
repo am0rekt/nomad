@@ -7,19 +7,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SecurityConfig {
 
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
-    }
-
     @Bean
-    @SuppressWarnings("deprecation")
-     static NoOpPasswordEncoder passwordEncoder() {
-        // No hashing, plain text passwords
-        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -28,10 +25,11 @@ public class SecurityConfig {
     }
 
     @Bean
-     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/register", "/login").permitAll()
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/register", "/otp/**","/login").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -40,12 +38,10 @@ public class SecurityConfig {
                 .permitAll()
             )
             .logout(logout -> logout
-            	    .logoutSuccessUrl("/login?logout")
-            	    .permitAll()
-            	);
-
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+            );
 
         return http.build();
     }
 }
-
