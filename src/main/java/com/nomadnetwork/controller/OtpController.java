@@ -3,13 +3,14 @@ package com.nomadnetwork.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.nomadnetwork.services.OtpServiceimpl;
+
 
 @Controller
 @RequestMapping("/otp")
 public class OtpController {
-
+	
     private final OtpServiceimpl otpService;
 
     public OtpController(OtpServiceimpl otpService) {
@@ -37,5 +38,17 @@ public class OtpController {
     	    }
 
     	    return "redirect:/login?verified=true";
+    }
+    
+    @GetMapping("/resend")
+    public String resendOtp(@RequestParam String email, RedirectAttributes redirectAttributes) {
+        try {
+            otpService.resendOtp(email);
+            redirectAttributes.addFlashAttribute("success", "OTP resent successfully");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/register";
+        }
+        return "redirect:/otp/page?email=" + email;
     }
 }

@@ -26,6 +26,10 @@
     <button type="submit">Verify OTP</button>
 </form>
 
+<a th:href="@{/otp/resend(email=${email})}">
+    Resend OTP
+</a>
+
 <div class="error" th:if="${error}" th:text="${error}"></div>
 
 </body>

@@ -1,5 +1,9 @@
 package com.nomadnetwork.services;
 
+import java.time.LocalDateTime;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nomadnetwork.entity.Otp;
@@ -18,6 +22,11 @@ public class OtpServiceimpl {
     	this.otpRepository = otpRepository;
     }
 
+    @Autowired
+    private EmailService emailService;
+    
+    @Autowired
+    private UserService userService;
 
     public boolean verifyOtp(String email, String enteredOtp) {
 
@@ -47,6 +56,34 @@ public class OtpServiceimpl {
 
         return true;
 
+
+    }
+    
+    public void resendOtp(String email) {
+
+        User user = userService.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        // delete old OTP
+        otpRepository.findByUser(user)
+        .ifPresent(otpRepository::delete);;
+
+        // generate OTP
+        String otpCode = String.valueOf(
+                new Random().nextInt(900000) + 100000
+        );
+
+        Otp otp = new Otp();
+        otp.setCode(otpCode);
+        otp.setUser(user);
+        otp.setExpiryTime(LocalDateTime.now().plusMinutes(5));
+        otpRepository.save(otp);
+
+        // send email
+        emailService.sendOtpEmail(user.getEmail(), otpCode);
+        System.out.println("Resent OTP for " + user.getEmail() + ": " + otpCode);
 
     }
 }
