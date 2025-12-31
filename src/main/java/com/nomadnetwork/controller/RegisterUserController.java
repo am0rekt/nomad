@@ -14,6 +14,7 @@ import com.nomadnetwork.dto.UserRegistrationDTO;
 import com.nomadnetwork.entity.Otp;
 import com.nomadnetwork.entity.User;
 import com.nomadnetwork.repository.OtpRepository;
+import com.nomadnetwork.services.EmailService;
 import com.nomadnetwork.services.UserService;
 
 @Controller
@@ -23,6 +24,9 @@ public class RegisterUserController {
 	
 	@Autowired
 	private OtpRepository otpRepository;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	 @GetMapping("/register")
 	 public String showRegistrationForm(Model model) {
@@ -42,6 +46,8 @@ public class RegisterUserController {
 	            otp.setExpiryTime(LocalDateTime.now().plusMinutes(5));
 	            otp.setUser(user);
 	            otpRepository.save(otp);
+	            emailService.sendOtpEmail(user.getEmail(), otpCode);
+
 
 	            System.out.println("OTP for user " + user.getEmail() + ": " + otpCode); // for testing
 
