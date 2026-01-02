@@ -1,6 +1,7 @@
 package com.nomadnetwork.services;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,35 +29,25 @@ public class OtpServiceimpl {
     @Autowired
     private UserService userService;
 
-    public boolean verifyOtp(String email, String enteredOtp) {
+    public void verifyOtp(String email, String enteredOtp) {
 
-    	User user = userRepository.findByEmail(email).orElse(null);
-        if (user == null) {
-            return false;
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Otp otp = otpRepository.findByUser(user).orElse(null);
-        if (otp == null) {
-            return false;
-        }
+        Otp otp = otpRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("OTP not found"));
 
         if (otp.isExpired()) {
-            return false;
+            throw new RuntimeException("OTP expired");
         }
 
         if (!otp.getCode().equals(enteredOtp)) {
-            return false;
+            throw new RuntimeException("Invalid OTP");
         }
 
-        // OTP is correct
         user.setEnabled(true);
         userRepository.save(user);
-
         otpRepository.delete(otp);
-
-        return true;
-
-
     }
     
     public void resendOtp(String email) {
@@ -66,9 +57,17 @@ public class OtpServiceimpl {
             throw new RuntimeException("User not found");
         }
 
-        // delete old OTP
-        otpRepository.findByUser(user)
-        .ifPresent(otpRepository::delete);;
+        Optional<Otp> existingOtp = otpRepository.findByUser(user);
+
+        if (existingOtp.isPresent()) {
+            Otp otp = existingOtp.get();
+
+            if (!otp.canResend()) {
+                throw new RuntimeException("Please wait 30 seconds before resending OTP");
+            }
+
+            otpRepository.delete(otp);
+        }
 
         // generate OTP
         String otpCode = String.valueOf(
@@ -78,6 +77,7 @@ public class OtpServiceimpl {
         Otp otp = new Otp();
         otp.setCode(otpCode);
         otp.setUser(user);
+        otp.setCreatedAt(LocalDateTime.now());
         otp.setExpiryTime(LocalDateTime.now().plusMinutes(5));
         otpRepository.save(otp);
 

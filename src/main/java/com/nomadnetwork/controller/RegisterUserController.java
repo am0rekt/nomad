@@ -43,6 +43,7 @@ public class RegisterUserController {
 	            String otpCode = String.valueOf(new Random().nextInt(900000) + 100000);
 	            Otp otp = new Otp();
 	            otp.setCode(otpCode);
+	            otp.setCreatedAt(LocalDateTime.now());
 	            otp.setExpiryTime(LocalDateTime.now().plusMinutes(5));
 	            otp.setUser(user);
 	            otpRepository.save(otp);

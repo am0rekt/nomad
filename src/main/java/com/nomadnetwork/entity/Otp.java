@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,8 @@ public class Otp {
     private Long id;
 
     private String code;
+    
+    private LocalDateTime createdAt;
 
     private LocalDateTime expiryTime;
 
@@ -28,10 +31,17 @@ public class Otp {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.expiryTime = createdAt.plusMinutes(5); // OTP valid for 5 mins
+    }
+    
     public boolean isExpired() {
         return expiryTime.isBefore(LocalDateTime.now());
     }
-    public String getCode() {
-        return code;
+
+    public boolean canResend() {
+        return createdAt.plusSeconds(30).isBefore(LocalDateTime.now());
     }
 }
