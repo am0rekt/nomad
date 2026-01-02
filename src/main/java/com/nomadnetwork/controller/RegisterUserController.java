@@ -44,7 +44,7 @@ public class RegisterUserController {
 	            Otp otp = new Otp();
 	            otp.setCode(otpCode);
 	            otp.setCreatedAt(LocalDateTime.now());
-	            otp.setExpiryTime(LocalDateTime.now().plusMinutes(5));
+	            otp.setExpiryTime(LocalDateTime.now().plusMinutes(3));
 	            otp.setUser(user);
 	            otpRepository.save(otp);
 	            emailService.sendOtpEmail(user.getEmail(), otpCode);

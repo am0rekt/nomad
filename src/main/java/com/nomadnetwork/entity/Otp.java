@@ -34,7 +34,7 @@ public class Otp {
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.expiryTime = createdAt.plusMinutes(5); // OTP valid for 5 mins
+        this.expiryTime = createdAt.plusMinutes(3); // OTP valid for 3 mins
     }
     
     public boolean isExpired() {

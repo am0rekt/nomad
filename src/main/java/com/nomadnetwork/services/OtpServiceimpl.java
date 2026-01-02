@@ -78,7 +78,7 @@ public class OtpServiceimpl {
         otp.setCode(otpCode);
         otp.setUser(user);
         otp.setCreatedAt(LocalDateTime.now());
-        otp.setExpiryTime(LocalDateTime.now().plusMinutes(5));
+        otp.setExpiryTime(LocalDateTime.now().plusMinutes(3));
         otpRepository.save(otp);
 
         // send email
