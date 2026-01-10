@@ -27,6 +27,7 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests(auth -> auth
+            	.requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/register", "/otp/**","/login").permitAll()
                 .anyRequest().authenticated()
             )
@@ -36,6 +37,9 @@ public class SecurityConfig {
                 .failureUrl("/login?error")
                 .permitAll()
             )
+            .exceptionHandling(ex -> ex
+                    .accessDeniedPage("/access-denied")
+                )
             .logout(logout -> logout
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
