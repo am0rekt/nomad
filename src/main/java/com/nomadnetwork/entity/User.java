@@ -21,7 +21,7 @@ public class User {
     private List<Post> posts;
 
     @Column(nullable = false)
-    private String username;
+    private String userName;
 
     @Column(nullable = false)
     private String password;

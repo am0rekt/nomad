@@ -18,20 +18,32 @@
       No places found.
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" 
-         th:if="${!#lists.isEmpty(results)}">
-      <div th:each="place : ${results}"
-           class="bg-white p-4 rounded shadow"
-           th:attr="data-lat=${place.latitude}, 
-                    data-lon=${place.longitude}, 
-                    data-name=${place.name}, 
-                    data-desc=${place.description}">
-        <h2 class="text-xl font-semibold mb-2" th:text="${place.name}"></h2>
-        <p class="text-gray-700" th:text="${place.description}"></p>
-      </div>
-    </div>
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+	     th:if="${!#lists.isEmpty(results)}">
+
+	  <a th:each="place : ${results}"
+	     th:href="@{/places/{id}(id=${place.placeId})}"
+	     class="block bg-white p-4 rounded shadow hover:shadow-lg transition"
+	     th:attr="data-lat=${place.latitude},
+	              data-lon=${place.longitude},
+	              data-name=${place.name},
+	              data-desc=${place.description}">
+
+	      <h2 class="text-xl font-semibold mb-2"
+	          th:text="${place.name}"></h2>
+
+	      <p class="text-gray-700"
+	         th:text="${place.description}"></p>
+
+	      <p class="text-sm text-blue-500 mt-2">
+	          View posts →
+	      </p>
+	  </a>
+
+	</div>
 
     <div class="mt-6">
+		
       <a th:href="@{/}" class="text-blue-500 hover:underline">← Back to Home</a>
     </div>
   </div>

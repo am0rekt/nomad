@@ -44,7 +44,7 @@ public class UserServiceim implements UserService {
         }
 
         User user = new User();
-        user.setUsername(dto.getUsername());
+        user.setUserName(dto.getUsername());
         user.setEmail(dto.getEmail());
         user.setPhone(dto.getPhone());
 
@@ -72,7 +72,7 @@ public class UserServiceim implements UserService {
 	public void updateProfile(User form) {
 	    User user = getCurrentUser();
 
-	    user.setUsername(form.getUsername());
+	    user.setUserName(form.getUserName());
 	    user.setPhone(form.getPhone());
 	    user.setBio(form.getBio());
 

@@ -4,12 +4,14 @@ import com.nomadnetwork.dto.PlaceDTO;
 
 import com.nomadnetwork.services.MediaService;
 import com.nomadnetwork.services.PlaceService;
+import com.nomadnetwork.services.PostService;
 
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -17,10 +19,14 @@ public class PageController {
 
     private final MediaService mediaService;
     private final PlaceService placeService;
+    private final PostService postService;
 
-    public PageController(MediaService mediaService,PlaceService placeService) {
+    public PageController(MediaService mediaService,
+    		PlaceService placeService,
+    		PostService postService) {
         this.mediaService = mediaService;
         this.placeService = placeService;
+        this.postService = postService;
     }
 
     // Home Page
@@ -44,5 +50,16 @@ public class PageController {
         return "places/search";  //search html
     }
 
+    @GetMapping("/places/{placeId}")
+    public String viewPlaceDetails(@PathVariable Long placeId, Model model) {
+
+        PlaceDTO place = placeService.getPlaceById(placeId);
+        model.addAttribute("place", place);
+
+        model.addAttribute("posts",
+                postService.getPostsByPlaceId(placeId));
+
+        return "places/place-details";
+    }
 }
 

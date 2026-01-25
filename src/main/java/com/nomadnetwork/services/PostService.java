@@ -12,6 +12,7 @@ public interface PostService {
     PostDTO savePost(PostDTO postDTO,MultipartFile image);
     void deletePost(Long id);
     public PostDTO updatePost(Long id, PostDTO postDTO);
+    public List<PostDTO> getPostsByPlaceId(Long placeID);
 
 }
 

@@ -37,7 +37,7 @@ public class PlaceServiceImpl implements PlaceService {
     public PlaceDTO getPlaceById(Long id) {
         return placeRepository.findById(id)
                 .map(this::convertToDTO)
-                .orElse(null); // or throw exception
+                .orElseThrow(() -> new RuntimeException("Place not found"));
     }
 	
 	 private PlaceDTO convertToDTO(Place place) {

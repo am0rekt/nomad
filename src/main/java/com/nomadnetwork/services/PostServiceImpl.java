@@ -38,6 +38,15 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private FileStorageServiceImpl fileStorageService;
     
+    private PostDTO convertToDTO(Post post) {
+        PostDTO dto = new PostDTO();
+        dto.setPostID(post.getPostID());
+        dto.setTitle(post.getTitle());
+        dto.setContent(post.getContent());
+        dto.setCreatedAt(post.getCreatedAt());
+        return dto;
+    }
+    
     @Override
     public List<PostDTO> getAllPost() {
         List<Post> posts = postRep.findAll();
@@ -177,6 +186,7 @@ public class PostServiceImpl implements PostService {
 
 	    // Save and return updated DTO
 	    Post updatedPost = postRep.save(post);
+	    
     	
     	return new PostDTO(
                 updatedPost.getPostID(),
@@ -185,6 +195,20 @@ public class PostServiceImpl implements PostService {
                 updatedPost.getContent(),
                 updatedPost.getCreatedAt(),
                 updatedPost.getUser().getUserID()
+                
         );
     }
-}
+    @Override
+    public List<PostDTO> getPostsByPlaceId(Long placeId) {
+        return postRep.findByPlace_PlaceID(placeId)
+                .stream()
+                .map(post -> {
+                    PostDTO dto = new PostDTO();
+                    dto.setTitle(post.getTitle());
+                    dto.setPostUrl(post.getPostUrl());
+                    dto.setDescription(post.getDescription());
+                    dto.setUserName(post.getUser().getUserName()); // set username here
+                    return dto;
+                }).toList();
+    }
+    }

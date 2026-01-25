@@ -2,7 +2,7 @@ package com.nomadnetwork.dto;
 import com.nomadnetwork.entity.User;
 
 public class UserDTO {
-	private String username;
+	private String userName;
 	private String bio;
 	private String email;
 	private String phone;
@@ -12,7 +12,7 @@ public class UserDTO {
 	}
 	
 	public UserDTO(String username, String bio, String email, String phone, String role) {
-	    this.username = username;
+	    this.userName = username;
 	    this.bio = bio;
 	    this.email = email;
 	    this.phone = phone;
@@ -21,7 +21,7 @@ public class UserDTO {
 
 	public static UserDTO fromEntity(User user) {
 	    return new UserDTO(
-	        user.getUsername(),
+	        user.getUserName(),
 	        user.getBio(),
 	        user.getEmail(),
 	        user.getPhone(),
@@ -30,11 +30,11 @@ public class UserDTO {
 	}
 
 	public String getUsername() {
-		return username;
+		return userName;
 	}
 
 	public void setUsername(String username) {
-		this.username = username;
+		this.userName = username;
 	}
 
 	public String getBio() {
