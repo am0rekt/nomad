@@ -31,7 +31,7 @@ public class PostDTO {
     
     private LocalDateTime createdAt;
     
-    private Long userId;
+    private Long userID;
     private String imageName;
     private String imagePath;
     private String imageType;
@@ -43,13 +43,13 @@ public class PostDTO {
     
     public PostDTO() {}
     
-    public PostDTO(Long postID, String postUrl, String title, String content, LocalDateTime createdAt, Long userId) {
+    public PostDTO(Long postID, String postUrl, String title, String content, LocalDateTime createdAt, Long userID) {
         this.postID = postID;
         this.postUrl = postUrl;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
-        this.userId = userId;
+        this.userID = userID;
         
     }
     

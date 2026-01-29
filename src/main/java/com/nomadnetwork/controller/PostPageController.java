@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import com.nomadnetwork.dto.PostDTO;
 import com.nomadnetwork.services.PlaceService;
 import com.nomadnetwork.services.PostService;
@@ -32,6 +35,8 @@ public class PostPageController {
     private PostService postService;
     @Autowired
     private PlaceService placeService;
+    
+    
     
     @GetMapping
     public String listPosts(Model model) {
@@ -51,7 +56,7 @@ public class PostPageController {
     @GetMapping("/create")
     public String showCreatePostForm(Model model) {
         model.addAttribute("post", new PostDTO());
-        model.addAttribute("places", placeService.getAllPlaces());// Using PostDTO, not Post entity
+        model.addAttribute("places", placeService.getAllPlaces());
         return "posts/create-post";  // templates/posts/create-post.html
     }
 
@@ -59,35 +64,17 @@ public class PostPageController {
     public String createPost(
             @ModelAttribute("post") PostDTO postDTO,
             @RequestParam(value = "image", required = false) MultipartFile image) {
+    	
+    	System.out.println("IMAGE NULL? " + (image == null));
+        System.out.println("IMAGE EMPTY? " + (image != null && image.isEmpty()));
+        System.out.println("IMAGE NAME: " + 
+            (image != null ? image.getOriginalFilename() : "NO IMAGE"));
 
-        // ✅ Temporarily set default user
-        postDTO.setUserId(1L);
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
+    	
+    	String username = auth.getName();
 
-        // ✅ Handle image upload (only if image is provided)
-        if (image != null && !image.isEmpty()) {
-            try {
-                // Create uploads directory if not exists
-                Path uploadDir = Paths.get("uploads/places").toAbsolutePath().normalize();
-                Files.createDirectories(uploadDir);
-
-                // Generate unique filename
-                String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
-                Path targetLocation = uploadDir.resolve(fileName);
-
-                // Copy the file to the uploads directory
-                Files.copy(image.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
-                // ✅ Store both the filesystem path and web-accessible path
-                postDTO.setImageName(fileName);
-                postDTO.setImagePath("uploads/places/" + fileName);
-                postDTO.setPostUrl("/uploads/places/" + fileName); // 🔗 public URL to access the image
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // ✅ Save post (with or without image)
-        postService.savePost(postDTO, image);
+    	postService.savePost(postDTO, image, username);
 
         return "redirect:/posts";
     }

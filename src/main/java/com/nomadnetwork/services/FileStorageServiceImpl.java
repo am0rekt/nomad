@@ -10,10 +10,11 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 
+
 @Service
 public class FileStorageServiceImpl implements FileStorageService{
 
-    private final String uploadDir = "uploads/places";
+    private final String uploadDir = "uploads/places/";
 
     public String saveFile(MultipartFile file) {
     	try {
@@ -29,9 +30,10 @@ public class FileStorageServiceImpl implements FileStorageService{
 
             // Save file
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            
 
             // Return path (you can customize this later to return URL)
-            return "/uploads/" + fileName;
+            return "/uploads/places/" + fileName;
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file", e);
         }

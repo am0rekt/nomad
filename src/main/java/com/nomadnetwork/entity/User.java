@@ -20,7 +20,7 @@ public class User {
     @JsonManagedReference
     private List<Post> posts;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "username")
     private String userName;
 
     @Column(nullable = false)

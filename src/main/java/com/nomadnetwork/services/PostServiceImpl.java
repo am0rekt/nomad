@@ -20,6 +20,13 @@ import com.nomadnetwork.repository.UserRepos;
 
 import jakarta.transaction.Transactional;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+
 @Service
 public class PostServiceImpl implements PostService {
 
@@ -49,7 +56,7 @@ public class PostServiceImpl implements PostService {
     
     @Override
     public List<PostDTO> getAllPost() {
-        List<Post> posts = postRep.findAll();
+        List<Post> posts = postRep.findAllWithMedia();
 
         return posts.stream().map(post -> {
             PostDTO dto = new PostDTO();
@@ -60,23 +67,27 @@ public class PostServiceImpl implements PostService {
             dto.setCreatedAt(post.getCreatedAt());
 
             if (post.getUser() != null) {
-                dto.setUserId(post.getUser().getUserID());
+                dto.setUserID(post.getUser().getUserID());
             }
 
             if (post.getPlace() != null) {
                 dto.setPlaceId(post.getPlace().getPlaceID());
             }
+            
+            
 
-            // ✅ Include media URLs
-            List<String> mediaUrls = post.getMediaList()
+            // ✅ SAFE now — media is loaded
+            dto.setMediaUrls(
+                post.getMediaList()
                     .stream()
                     .map(Media::getUrl)
-                    .toList();
-            dto.setMediaUrls(mediaUrls);
+                    .toList()
+            );
 
             return dto;
         }).toList();
     }
+
 
 
     @Override
@@ -92,7 +103,7 @@ public class PostServiceImpl implements PostService {
         dto.setCreatedAt(post.getCreatedAt());
 
         if (post.getUser() != null) {
-            dto.setUserId(post.getUser().getUserID());
+            dto.setUserID(post.getUser().getUserID());
         }
 
         if (post.getPlace() != null) {
@@ -113,8 +124,30 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostDTO savePost(PostDTO postDTO,MultipartFile image) {
+    public PostDTO savePost(PostDTO postDTO,MultipartFile image,String username) {
         Post post = new Post();
+        
+        if (image != null && !image.isEmpty()) {
+            try {
+                // Create uploads directory if not exists
+                Path uploadDir = Paths.get("uploads/places").toAbsolutePath().normalize();
+                Files.createDirectories(uploadDir);
+
+                // Generate unique filename
+                String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+                Path targetLocation = uploadDir.resolve(fileName);
+
+                // Copy the file to the uploads directory
+                Files.copy(image.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+                // ✅ Store both the filesystem path and web-accessible path
+                postDTO.setImageName(fileName);
+                postDTO.setImagePath("uploads/places/" + fileName);
+                postDTO.setPostUrl("/uploads/places/" + fileName); // 🔗 public URL to access the image
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         post.setPostUrl(postDTO.getPostUrl());
         post.setTitle(postDTO.getTitle());
         post.setDescription(postDTO.getDescription());
@@ -122,11 +155,9 @@ public class PostServiceImpl implements PostService {
         post.setCreatedAt(LocalDateTime.now());
 
         // ✅ Set user if provided
-        if (postDTO.getUserId() != null) {
-            User user = userRepo.findById(postDTO.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-            post.setUser(user);
-        }
+        User user = userRepo.findByEmail(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        post.setUser(user); 
 
         // ✅ Set place if provided
         if (postDTO.getPlaceName() != null && postDTO.getCountry() != null) {
@@ -146,15 +177,9 @@ public class PostServiceImpl implements PostService {
                 media.setPost(savedPost);
                 mediaRepo.save(media);
             }
-        }
-        if (image != null && !image.isEmpty()) {
-            String imagePath = fileStorageService.saveFile(image);
-            Media media = new Media();
-            media.setUrl(imagePath);
-            media.setType(MediaType.IMAGE);
-            media.setPost(savedPost);
-            mediaRepo.save(media);
-        }
+            }
+        
+        
 
         // ✅ Return the saved DTO
         return getPostById(savedPost.getPostID());

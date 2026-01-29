@@ -11,8 +11,8 @@ public class UserDTO {
 	public UserDTO() {
 	}
 	
-	public UserDTO(String username, String bio, String email, String phone, String role) {
-	    this.userName = username;
+	public UserDTO(String userName, String bio, String email, String phone, String role) {
+	    this.userName = userName;
 	    this.bio = bio;
 	    this.email = email;
 	    this.phone = phone;
@@ -33,8 +33,8 @@ public class UserDTO {
 		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.userName = username;
+	public void setUsername(String userName) {
+		this.userName = userName;
 	}
 
 	public String getBio() {
