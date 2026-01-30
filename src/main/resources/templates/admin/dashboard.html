@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+
+<!-- Header -->
+<div class="bg-gray-900 text-white p-4">
+    <h1 class="text-2xl font-semibold">Nomad Network – Admin Dashboard</h1>
+</div>
+<ul>
+    <li><a th:href="@{/admin/users}">Manage Users</a></li>
+    <li><a th:href="@{/admin/posts}">Manage Posts</a></li>
+</ul>
+
+<div class="container mx-auto p-6">
+
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+
+        <div class="bg-white p-6 rounded shadow">
+            <p class="text-gray-500">Users</p>
+            <h2 class="text-3xl font-bold" th:text="${userCount}">0</h2>
+        </div>
+
+        <div class="bg-white p-6 rounded shadow">
+            <p class="text-gray-500">Posts</p>
+            <h2 class="text-3xl font-bold" th:text="${postCount}">0</h2>
+        </div>
+
+        <div class="bg-white p-6 rounded shadow">
+            <p class="text-gray-500">Places</p>
+            <h2 class="text-3xl font-bold" th:text="${placeCount}">0</h2>
+        </div>
+
+        <div class="bg-white p-6 rounded shadow">
+            <p class="text-gray-500">Scam Reports</p>
+            <h2 class="text-3xl font-bold">0</h2>
+        </div>
+
+    </div>
+
+    <!-- Recent Posts -->
+    <div class="bg-white rounded shadow p-6">
+        <h2 class="text-xl font-semibold mb-4">Recent Posts</h2>
+
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="border-b">
+                    <th class="p-2">Title</th>
+                    <th class="p-2">Place</th>
+                    <th class="p-2">User</th>
+                    <th class="p-2">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="post : ${recentPosts}" class="border-b hover:bg-gray-50">
+                    <td class="p-2" th:text="${post.title}">Post title</td>
+                    <td class="p-2" th:text="${post.placeName}">Place</td>
+                    <td class="p-2" th:text="${post.userName}">User</td>
+                    <td class="p-2"
+                        th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy')}">
+                        Date
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

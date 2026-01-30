@@ -63,6 +63,9 @@
                             Created At
                         </th>
 						<th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+							Place
+						</th>
+						<th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
 							Image 
 						</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -75,7 +78,7 @@
                         <td th:text="${post.postID}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
                         <td th:text="${post.title}" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"></td>
                         <td th:text="${#temporals.format(post.createdAt, 'dd-MM-yyyy HH:mm')}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
-						
+						<td th:text="${post.placeName}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
 						<td>
 						        <img th:if="${post.postUrl != null}"
 						             th:src="@{${post.postUrl}}"

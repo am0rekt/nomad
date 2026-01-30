@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin | Posts</title>
+</head>
+<body>
+
+<h1>📝 Posts Management</h1>
+
+<table border="1" width="100%" cellpadding="10">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Place</th>
+            <th>Created</th>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr th:each="post : ${posts}">
+            <td th:text="${post.postID}"></td>
+            <td th:text="${post.title}"></td>
+            <td th:text="${post.placeName}"></td>
+            <td th:text="${post.createdAt}"></td>
+
+            <td>
+                <img th:if="${post.mediaUrls != null and !post.mediaUrls.isEmpty()}"
+                     th:src="@{${post.mediaUrls[0]}}"
+                     width="80">
+            </td>
+
+            <td>
+                <a th:href="@{/posts/{id}(id=${post.postID})}">View</a> |
+                <a th:href="@{/admin/posts/delete/{id}(id=${post.postID})}"
+                   style="color:red">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<a th:href="@{/admin/dashboard}">⬅ Back to Dashboard</a>
+
+</body>
+</html>

@@ -72,6 +72,7 @@ public class PostServiceImpl implements PostService {
 
             if (post.getPlace() != null) {
                 dto.setPlaceId(post.getPlace().getPlaceID());
+                dto.setPlaceName(post.getPlace().getName()); 
             }
             
             

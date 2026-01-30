@@ -26,9 +26,24 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            .authorizeHttpRequests(auth -> auth
-            	.requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/register", "/otp/**","/login").permitAll()
+        .authorizeHttpRequests(auth -> auth
+
+                // ✅ static resources
+                .requestMatchers(
+                    "/images/**",
+                    "/css/**",
+                    "/js/**",
+                    "/uploads/**",
+                    "/favicon.ico"
+                ).permitAll()
+
+                // ✅ public pages
+                .requestMatchers("/register", "/otp/**", "/login").permitAll()
+
+                // ✅ admin only
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                // ✅ everything else needs login
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
