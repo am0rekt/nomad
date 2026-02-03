@@ -47,27 +47,29 @@
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-semibold mb-4">Recent Posts</h2>
 
-        <table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="border-b">
-                    <th class="p-2">Title</th>
-                    <th class="p-2">Place</th>
-                    <th class="p-2">User</th>
-                    <th class="p-2">Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="post : ${recentPosts}" class="border-b hover:bg-gray-50">
-                    <td class="p-2" th:text="${post.title}">Post title</td>
-                    <td class="p-2" th:text="${post.placeName}">Place</td>
-                    <td class="p-2" th:text="${post.userName}">User</td>
-                    <td class="p-2"
-                        th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy')}">
-                        Date
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+		<table class="recent-table w-full text-left border-separate border-spacing-y-3">
+		    <thead>
+		        <tr>
+					<th class="px-4 py-2 font-semibold text-gray-700">Title</th>
+					<th class="px-4 py-2 font-semibold text-gray-700">Place</th>
+					<th class="px-4 py-2 font-semibold text-gray-700">User</th>
+					<th class="px-4 py-2 font-semibold text-gray-700">Date</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+				<tr th:each="post : ${recentPosts}">
+				    <td th:text="${post.title}">
+						Title</td>
+				    <td th:text="${post.place.name}">
+						Place</td>
+				    <td th:text="${post.user.userName}">
+						User</td>
+				    <td th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy')}">
+						Date</td>
+				</tr>
+		    </tbody>
+		</table>
+
     </div>
 
 </div>

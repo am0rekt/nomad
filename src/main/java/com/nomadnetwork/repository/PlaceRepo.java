@@ -10,5 +10,5 @@ public interface PlaceRepo extends JpaRepository<Place,Long> {
 	
 	List<Place> findByNameContainingIgnoreCase(String keyword);
 	Optional<Place> findByNameIgnoreCaseAndCountryIgnoreCase(String name,String country);
-
+	
 }

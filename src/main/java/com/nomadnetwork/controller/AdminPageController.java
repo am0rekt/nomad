@@ -11,17 +11,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nomadnetwork.services.AdminService;
+import com.nomadnetwork.services.DashboardService;
 
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminPageController {
 	
+
+    private final DashboardService dashboardService;
+
+    public AdminPageController(DashboardService dashboardService) {
+        this.dashboardService = dashboardService;
+    }
+	
 	@Autowired
     private AdminService adminService;
 	
 	@GetMapping("/dashboard")
-    public String adminDashboard() {
+    public String adminDashboard(Model model) {
+		
+		 model.addAttribute("userCount", dashboardService.getUserCount());
+	     model.addAttribute("postCount", dashboardService.getPostCount());
+	     model.addAttribute("placeCount", dashboardService.getPlaceCount());
+	     model.addAttribute("recentPosts", adminService.getRecentPosts());
+	     
         return "admin/dashboard";
     }
 

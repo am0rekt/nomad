@@ -48,6 +48,7 @@ public class PostServiceImpl implements PostService {
     private PostDTO convertToDTO(Post post) {
         PostDTO dto = new PostDTO();
         dto.setPostID(post.getPostID());
+        dto.setPostUrl(post.getPostUrl());
         dto.setTitle(post.getTitle());
         dto.setContent(post.getContent());
         dto.setCreatedAt(post.getCreatedAt());

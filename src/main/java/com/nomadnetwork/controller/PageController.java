@@ -31,7 +31,8 @@ public class PageController {
 
     // Home Page
     @GetMapping("/")
-    public String viewHomePage() {
+    public String viewHomePage(Model model) {
+    	model.addAttribute("posts", postService.getAllPost());
         return "index"; // templates/index.html
     }
 

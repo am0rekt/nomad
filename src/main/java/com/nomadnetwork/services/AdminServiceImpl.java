@@ -1,5 +1,9 @@
 package com.nomadnetwork.services;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.nomadnetwork.dto.PostDTO;
 import com.nomadnetwork.dto.UserDTO;
+import com.nomadnetwork.entity.Media;
+import com.nomadnetwork.entity.Post;
 import com.nomadnetwork.entity.User;
 import com.nomadnetwork.enums.Role;
 import com.nomadnetwork.repository.Postrepos;
@@ -14,6 +20,8 @@ import com.nomadnetwork.repository.UserRepos;
 
 @Service
 public class AdminServiceImpl implements AdminService {
+	
+	
 
 	@Autowired
     private UserRepos userRepo;
@@ -67,6 +75,25 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deletePost(Long postId) {
-        postRepo.deleteById(postId);
+
+        Post post = postRepo.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        // Delete files from disk
+        for (Media media : post.getMediaList()) {
+            try {
+                Path path = Paths.get(media.getUrl().replaceFirst("/", ""));
+                Files.deleteIfExists(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Delete DB record (media removed via cascade)
+        postRepo.delete(post);
+    }
+    
+    public List<Post> getRecentPosts() {
+        return postRepo.findTop5ByOrderByCreatedAtDesc();
     }
 }
