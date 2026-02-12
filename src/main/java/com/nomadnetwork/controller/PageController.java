@@ -5,6 +5,7 @@ import com.nomadnetwork.dto.PlaceDTO;
 import com.nomadnetwork.services.MediaService;
 import com.nomadnetwork.services.PlaceService;
 import com.nomadnetwork.services.PostService;
+import com.nomadnetwork.services.UserService;
 
 import java.util.List;
 
@@ -20,19 +21,23 @@ public class PageController {
     private final MediaService mediaService;
     private final PlaceService placeService;
     private final PostService postService;
+    private final UserService userService;
 
     public PageController(MediaService mediaService,
     		PlaceService placeService,
-    		PostService postService) {
+    		PostService postService,UserService userService) {
         this.mediaService = mediaService;
         this.placeService = placeService;
         this.postService = postService;
+        this.userService = userService;
     }
 
     // Home Page
     @GetMapping("/")
     public String viewHomePage(Model model) {
     	model.addAttribute("posts", postService.getAllPost());
+    	model.addAttribute("currentUser", userService.getCurrentUser());   
+
         return "index"; // templates/index.html
     }
 

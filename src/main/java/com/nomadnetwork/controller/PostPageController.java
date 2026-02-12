@@ -83,7 +83,7 @@ public class PostPageController {
 
     	postService.savePost(postDTO, image, username);
 
-        return "redirect:/posts";
+        return "redirect:/profile";
     }
 
 
