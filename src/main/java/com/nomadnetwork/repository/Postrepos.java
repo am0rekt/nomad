@@ -18,5 +18,9 @@ public interface Postrepos extends JpaRepository<Post, Long> {
 			 ORDER BY p.createdAt DESC
 			 """)
 			 List<Post> findAllWithMedia();
+	 
 
+	    List<Post> findByUserUserID(Long userID);
+	    
+	  List<Post> findByUserUserIDOrderByCreatedAtDesc(Long userID);
 }

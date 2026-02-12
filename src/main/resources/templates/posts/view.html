@@ -17,8 +17,11 @@
             overflow: hidden;
         }
         .post-image {
-			width: 100%;
-			height: auto;
+            width: 100%;
+            height: auto;
+        }
+        .delete-btn {
+            font-size: 0.8rem;
         }
     </style>
 </head>
@@ -39,7 +42,6 @@
 
 <!-- CONTENT -->
 <div class="container mt-5">
-
     <div class="row justify-content-center">
         <div class="col-md-9 col-lg-8">
 
@@ -53,10 +55,21 @@
                 <!-- BODY -->
                 <div class="card-body p-4">
 
-                    <h2 class="fw-bold mb-2"
-                        th:text="${post.title}">
-                        Post Title
-                    </h2>
+                    <!-- TITLE + DELETE -->
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h2 class="fw-bold"
+                            th:text="${post.title}">
+                            Post Title
+                        </h2>
+
+                        <!-- DELETE (only owner) -->
+                        <a th:if="${currentUser != null and post.userID == currentUser.userID}"
+                           th:href="@{/posts/delete/{id}(id=${post.postID})}"
+                           class="btn btn-sm btn-outline-danger delete-btn"
+                           onclick="return confirm('Delete this post?');">
+                            Delete
+                        </a>
+                    </div>
 
                     <p class="text-muted mb-1">
                         📍 <span th:text="${post.placeName}">Place</span>
@@ -86,7 +99,6 @@
 
         </div>
     </div>
-
 </div>
 
 <!-- FOOTER -->
@@ -98,6 +110,3 @@
 
 </body>
 </html>
-
-
-

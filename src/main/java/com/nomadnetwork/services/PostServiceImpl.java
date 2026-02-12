@@ -43,12 +43,14 @@ public class PostServiceImpl implements PostService {
     private PlaceServiceImpl placeService;
     
     @Autowired
+    private UserServiceim userService;
+    
+    @Autowired
     private FileStorageServiceImpl fileStorageService;
     
     private PostDTO convertToDTO(Post post) {
         PostDTO dto = new PostDTO();
         dto.setPostID(post.getPostID());
-        dto.setPostUrl(post.getPostUrl());
         dto.setTitle(post.getTitle());
         dto.setContent(post.getContent());
         dto.setCreatedAt(post.getCreatedAt());
@@ -69,6 +71,7 @@ public class PostServiceImpl implements PostService {
 
             if (post.getUser() != null) {
                 dto.setUserID(post.getUser().getUserID());
+                dto.setUserName(post.getUser().getUserName());
             }
 
             if (post.getPlace() != null) {
@@ -106,10 +109,12 @@ public class PostServiceImpl implements PostService {
 
         if (post.getUser() != null) {
             dto.setUserID(post.getUser().getUserID());
+            dto.setUserName(post.getUser().getUserName());
         }
 
         if (post.getPlace() != null) {
             dto.setPlaceId(post.getPlace().getPlaceID());
+            dto.setPlaceName(post.getPlace().getName()); 
         }
 
         // ✅ Convert media list to URLs
@@ -192,11 +197,19 @@ public class PostServiceImpl implements PostService {
     
     @Override
     @Transactional
-    public void deletePost(Long id) {
-    	 if (!postRep.existsById(id)) {
-    	        throw new PostNotFoundException(id);
+    public void deletePost(Long postId) {
+    	Post post = postRep.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+    	 User currentUser = userService.getCurrentUser();
+
+    	    if (post.getUser().getUserID() != currentUser.getUserID()) {
+    	        throw new RuntimeException("Not authorized");
     	    }
-    	postRep.deleteById(id);
+
+        // 🔒 ownership check
+    	
+        
+    	postRep.deleteById(postId);
     	
     }
     
@@ -238,4 +251,33 @@ public class PostServiceImpl implements PostService {
                     return dto;
                 }).toList();
     }
+    
+    @Override
+    public List<PostDTO> getPostsByUserId(Long userId) {
+
+        
+        List<Post> posts =
+                postRep.findByUserUserIDOrderByCreatedAtDesc(userId);
+
+        return posts.stream().map(post -> {
+            PostDTO dto = new PostDTO();
+
+            dto.setPostID(post.getPostID());
+            dto.setPostUrl(post.getPostUrl());
+            dto.setTitle(post.getTitle());
+            dto.setContent(post.getContent());
+            dto.setCreatedAt(post.getCreatedAt());
+
+            if (post.getUser() != null) {
+                dto.setUserID(post.getUser().getUserID());
+            }
+
+            if (post.getPlace() != null) {
+                dto.setPlaceId(post.getPlace().getPlaceID());
+            }
+
+            return dto;
+        }).toList();
+    }
+    
     }

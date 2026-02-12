@@ -24,8 +24,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.nomadnetwork.dto.PostDTO;
+import com.nomadnetwork.entity.User;
 import com.nomadnetwork.services.PlaceService;
 import com.nomadnetwork.services.PostService;
+import com.nomadnetwork.services.UserService;
 
 @Controller
 @RequestMapping("/posts")
@@ -35,7 +37,8 @@ public class PostPageController {
     private PostService postService;
     @Autowired
     private PlaceService placeService;
-    
+    @Autowired
+    private UserService userService;
     
     
     @GetMapping
@@ -47,8 +50,12 @@ public class PostPageController {
 
     @GetMapping("/{id}")
     public String viewPost(@PathVariable Long id, Model model) {
-        PostDTO post = postService.getPostById(id);
+        PostDTO post = (PostDTO) postService.getPostById(id);
+        User currentUser = userService.getCurrentUser();
+
+        
         model.addAttribute("post", post);
+        model.addAttribute("currentUser", currentUser); 
         return "posts/view";  // templates/posts/view.html
     }
 
@@ -83,7 +90,7 @@ public class PostPageController {
     @GetMapping("/delete/{id}")
     public String deletePost(@PathVariable Long id) {
         postService.deletePost(id);
-        return "redirect:/posts";
+        return "redirect:/profile";
     }
 }
 

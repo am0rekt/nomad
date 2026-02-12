@@ -30,40 +30,19 @@
         </div>
     </div>
 
-    <!-- User Posts -->
-    <h2 class="text-xl font-semibold mb-4">Posts</h2>
+	<div th:if="${posts != null and !posts.isEmpty()}">
+	    <div class="grid grid-cols-2 md:grid-cols-3 gap-1">
+	        <a th:each="post : ${posts}"
+	           th:href="@{/posts/{id}(id=${post.postID})}"
+	           class="block">
+	            <div class="aspect-square overflow-hidden">
+	                <img th:src="${post.postUrl}"
+	                     class="w-full h-full object-cover hover:scale-105 transition">
+	            </div>
+	        </a>
+	    </div>
+	</div>
 
-    <div th:if="${#lists.isEmpty(posts)}" class="text-gray-500">
-        No posts yet.
-    </div>
-
-    <div th:if="${!#lists.isEmpty(posts)}"
-         class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <div th:each="post : ${posts}"
-             class="bg-white rounded-lg shadow overflow-hidden">
-
-            <!-- Post Image -->
-            <img th:if="${post.imageUrl != null}"
-                 th:src="${post.imageUrl}"
-                 class="w-full h-48 object-cover">
-
-            <div class="p-4">
-                <h3 class="text-lg font-semibold" th:text="${post.title}">
-                    Post Title
-                </h3>
-
-                <p class="text-gray-700 mt-2" th:text="${post.content}">
-                    Post content
-                </p>
-
-                <p class="text-sm text-gray-500 mt-3">
-                    Posted on
-                    <span th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy')}"></span>
-                </p>
-            </div>
-        </div>
-    </div>
 
     <!-- Back -->
     <div class="mt-6">

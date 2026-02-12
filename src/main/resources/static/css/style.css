@@ -189,4 +189,25 @@ footer {
     padding: 12px 16px;
     background: #fff;
 }
+.insta-post {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background-color: #f5f5f5;
+}
+
+.insta-post img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.insta-post:hover img {
+    transform: scale(1.05);
+}
+
+.post-link {
+    display: block;
+}
 
