@@ -26,8 +26,6 @@ public class OtpServiceimpl {
     @Autowired
     private EmailService emailService;
     
-    @Autowired
-    private UserService userService;
 
     public void verifyOtp(String email, String enteredOtp) {
 
@@ -52,9 +50,13 @@ public class OtpServiceimpl {
     
     public void resendOtp(String email) {
 
-        User user = userService.findByEmail(email);
-        if (user == null) {
-            throw new RuntimeException("User not found");
+    	User user = userRepository.findByEmail(email)
+    	        .orElseThrow(() -> new RuntimeException("User not found"));
+
+        
+        
+        if (user.isEnabled()) {
+            throw new RuntimeException("Account already verified");
         }
 
         Optional<Otp> existingOtp = otpRepository.findByUser(user);

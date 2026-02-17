@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.nomadnetwork.repository.PlaceRepo;
 import com.nomadnetwork.repository.Postrepos;
+import com.nomadnetwork.repository.ReportRepository;
 import com.nomadnetwork.repository.UserRepos;
 
 @Service
@@ -12,13 +13,16 @@ public class DashboardService {
 	private final UserRepos userRepo;
     private final Postrepos postRepo;
     private final PlaceRepo placeRepo;
+    private final ReportRepository reportRepository;
 
     public DashboardService(UserRepos userRepo,
                             Postrepos postRepo,
-                            PlaceRepo placeRepo) {
+                            PlaceRepo placeRepo,
+                            ReportRepository reportRepository) {
         this.userRepo = userRepo;
         this.postRepo = postRepo;
         this.placeRepo = placeRepo;
+        this.reportRepository=reportRepository;
     }
     
     public long getUserCount() {
@@ -31,5 +35,9 @@ public class DashboardService {
     
     public long getPlaceCount() {
     	return placeRepo.count();
+    }
+    
+    public long getReportCount() {
+    	return reportRepository.count();
     }
 }

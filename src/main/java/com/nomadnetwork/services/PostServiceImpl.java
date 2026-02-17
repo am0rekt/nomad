@@ -209,7 +209,7 @@ public class PostServiceImpl implements PostService {
         // 🔒 ownership check
     	
         
-    	postRep.deleteById(postId);
+    	    postRep.delete(post);
     	
     }
     
@@ -280,4 +280,19 @@ public class PostServiceImpl implements PostService {
         }).toList();
     }
     
+    public Post getPostEntityById(Long id) {
+        return postRep.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
     }
+    
+    
+    @Override
+    @Transactional
+    public void deletePostByAdmin(Long id) {
+    	Post post = postRep.findById(id)
+    			.orElseThrow(() -> new RuntimeException("Post not found"));
+    	
+    	postRep.delete(post);
+        
+    }
+}

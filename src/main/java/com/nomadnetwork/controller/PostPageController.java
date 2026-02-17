@@ -3,6 +3,7 @@ package com.nomadnetwork.controller;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -25,8 +26,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.nomadnetwork.dto.PostDTO;
 import com.nomadnetwork.entity.User;
+import com.nomadnetwork.entity.Post;
 import com.nomadnetwork.services.PlaceService;
 import com.nomadnetwork.services.PostService;
+import com.nomadnetwork.services.ReportServiceImpl;
 import com.nomadnetwork.services.UserService;
 
 @Controller
@@ -39,6 +42,8 @@ public class PostPageController {
     private PlaceService placeService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ReportServiceImpl reportService;
     
     
     @GetMapping
@@ -91,6 +96,19 @@ public class PostPageController {
     public String deletePost(@PathVariable Long id) {
         postService.deletePost(id);
         return "redirect:/profile";
+    }
+    
+    @PostMapping("/{id}/report")
+    public String reportPost(@PathVariable Long id,
+            @RequestParam String reason,
+            Principal principal) {
+
+    			Post post = postService.getPostEntityById(id);
+    			User user = userService.findByEmail(principal.getName());
+
+    			reportService.reportPost(post, user, reason);
+
+    			return "redirect:/";
     }
 }
 

@@ -3,6 +3,8 @@
 <head>
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	<script src="https://unpkg.com/heroicons@2.0.18/dist/heroicons.min.js"></script>
+
 </head>
 
 <body class="bg-gray-100">
@@ -19,27 +21,94 @@
 <div class="container mx-auto p-6">
 
     <!-- Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
 
-        <div class="bg-white p-6 rounded shadow">
-            <p class="text-gray-500">Users</p>
-            <h2 class="text-3xl font-bold" th:text="${userCount}">0</h2>
-        </div>
+		<a th:href="@{/admin/users}" 
+		   class="block bg-white p-6 rounded shadow hover:shadow-xl hover:scale-105 transition transform duration-200">
 
-        <div class="bg-white p-6 rounded shadow">
-            <p class="text-gray-500">Posts</p>
-            <h2 class="text-3xl font-bold" th:text="${postCount}">0</h2>
-        </div>
+		    <div class="flex items-center justify-between">
+		        <div>
+		            <p class="text-gray-500">Users</p>
+		            <h2 class="text-3xl font-bold" th:text="${userCount}">0</h2>
+		        </div>
 
-        <div class="bg-white p-6 rounded shadow">
-            <p class="text-gray-500">Places</p>
-            <h2 class="text-3xl font-bold" th:text="${placeCount}">0</h2>
-        </div>
+		        <!-- User Icon -->
+		        <svg xmlns="http://www.w3.org/2000/svg" 
+		             class="h-10 w-10 text-blue-500" 
+		             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+		                  d="M5.121 17.804A9 9 0 1118.879 17.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+		        </svg>
+		    </div>
+
+		</a>
+
+
+		<a th:href="@{/admin/posts}" 
+		   class="block bg-white p-6 rounded shadow hover:shadow-xl hover:scale-105 transition transform duration-200">
+
+		    <div class="flex items-center justify-between">
+		        <div>
+		            <p class="text-gray-500">Posts</p>
+		            <h2 class="text-3xl font-bold" th:text="${postCount}">0</h2>
+		        </div>
+
+		        <!-- Post Icon -->
+		        <svg xmlns="http://www.w3.org/2000/svg" 
+		             class="h-10 w-10 text-green-500" 
+		             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+		                  d="M9 12h6m-6 4h6m-6-8h6M5 4h14v16H5z" />
+		        </svg>
+		    </div>
+
+		</a>
+
+
+		<a th:href="@{/admin/places}" 
+		   class="block bg-white p-6 rounded shadow hover:shadow-xl hover:scale-105 transition transform duration-200">
+
+		    <div class="flex items-center justify-between">
+		        <div>
+		            <p class="text-gray-500">Places</p>
+		            <h2 class="text-3xl font-bold" th:text="${placeCount}">0</h2>
+		        </div>
+
+		        <!-- Location Icon -->
+		        <svg xmlns="http://www.w3.org/2000/svg" 
+		             class="h-10 w-10 text-red-500" 
+		             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+		                  d="M12 11c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3zm0 0c0 4 3 7 3 7s3-3 3-7a6 6 0 10-12 0c0 4 3 7 3 7z" />
+		        </svg>
+		    </div>
+
+		</a>
 
         <div class="bg-white p-6 rounded shadow">
             <p class="text-gray-500">Scam Reports</p>
             <h2 class="text-3xl font-bold">0</h2>
         </div>
+		
+		<a th:href="@{/admin/reports}" 
+		   class="block bg-white p-6 rounded shadow hover:shadow-xl hover:scale-105 transition transform duration-200">
+
+		    <div class="flex items-center justify-between">
+		        <div>
+		            <p class="text-gray-500">Reports</p>
+		            <h2 class="text-3xl font-bold" th:text="${reportCount}">0</h2>
+		        </div>
+
+		        <!-- Warning Icon -->
+		        <svg xmlns="http://www.w3.org/2000/svg" 
+		             class="h-10 w-10 text-yellow-500" 
+		             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+		                  d="M12 9v2m0 4h.01M10.29 3.86l-7.21 12.48A2 2 0 004.79 20h14.42a2 2 0 001.71-3.66L13.71 3.86a2 2 0 00-3.42 0z" />
+		        </svg>
+		    </div>
+
+		</a>
 
     </div>
 
@@ -71,6 +140,9 @@
 		</table>
 
     </div>
+
+
+
 
 </div>
 

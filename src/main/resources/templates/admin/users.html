@@ -25,9 +25,18 @@
             <td th:text="${user.role}"></td>
             <td th:text="${user.enabled}"></td>
             <td>
-                <a th:href="@{/admin/users/role/{id}(id=${user.userID})}">
-                    Change Role
-                </a>
+				<form th:action="@{/admin/users/{id}/role(id=${user.userID})}" method="post">
+
+				    <select name="role">
+				        <option value="USER" th:selected="${user.role == 'USER'}">USER</option>
+				        <option value="ADMIN" th:selected="${user.role == 'ADMIN'}">ADMIN</option>
+				    </select>
+
+				    <button type="submit">Update</button>
+
+				</form>
+
+
             </td>
         </tr>
     </tbody>

@@ -46,17 +46,22 @@ public class AdminServiceImpl implements AdminService {
     }
     
     @Override
-    public void changeUserRole(Long userId, String role) {
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
+    public void changeUserRole(Long id, String role) {
+        User user = userRepo.findById(id).orElseThrow();
         user.setRole(Role.valueOf(role));
+     
         userRepo.save(user);
     }
     
     @Override
     public void deleteUser(Long userId) {
-        userRepo.deleteById(userId);
+    	User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setDeleted(true);
+        user.setEnabled(false);   // prevent login
+
+        userRepo.save(user);
     }
 
     @Override

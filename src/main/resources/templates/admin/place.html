@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin | Places</title>
+</head>
+<body>
+
+<h1>📍 Places Management</h1>
+
+<table border="1" width="100%" cellpadding="8">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>City</th>
+        <th>Country</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="place : ${places}">
+        <form th:action="@{/admin/places/{id}/update(id=${place.placeID})}" method="post">
+
+            <td th:text="${place.placeID}"></td>
+
+            <td th:text="${place.name}"></td>
+
+            <td>
+                <input type="text" name="city" th:value="${place.city}">
+            </td>
+
+            <td>
+                <input type="text" name="country" th:value="${place.country}">
+            </td>
+
+            <td>
+                <input type="number" step="any" name="latitude" th:value="${place.latitude}">
+            </td>
+
+            <td>
+                <input type="number" step="any" name="longitude" th:value="${place.longitude}">
+            </td>
+
+            <td>
+                <input type="text" name="description" th:value="${place.description}">
+            </td>
+
+            <td>
+                <button type="submit">Update</button>
+            </td>
+
+        </form>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<a th:href="@{/admin/dashboard}">⬅ Back</a>
+
+</body>
+</html>

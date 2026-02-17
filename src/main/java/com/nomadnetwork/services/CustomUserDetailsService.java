@@ -17,24 +17,29 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepos userRepo;
+    @Autowired 
+    private OtpServiceimpl otpService;
+    
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        
-        if (!user.isEnabled()) {
-            throw new DisabledException("Account not verified");
-        }
+        System.out.println("User enabled status: " + user.isEnabled());
+
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), // login using email
-                user.getPassword(), // hashed password
-                true,   // enabled (already checked)
-                true,   // accountNonExpired
-                true,   // credentialsNonExpired
+                user.getEmail(),
+                user.getPassword(),
+                user.isEnabled(),  // allow authentication to proceed
+                true,
+                true,
                 true,
                 List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
+                    
         );
+
     }
+
 }

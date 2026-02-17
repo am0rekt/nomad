@@ -5,13 +5,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.nomadnetwork.security.CustomAuthFailureHandler;
+
+import lombok.RequiredArgsConstructor;
+
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CustomAuthFailureHandler customAuthFailureHandler;
+
+	
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -38,7 +50,7 @@ public class SecurityConfig {
                 ).permitAll()
 
                 // ✅ public pages
-                .requestMatchers("/register", "/otp/**", "/login").permitAll()
+                .requestMatchers("/register", "/otp/**", "/login","/page", "/verify").permitAll()
 
                 // ✅ admin only
                 .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -46,12 +58,13 @@ public class SecurityConfig {
                 // ✅ everything else needs login
                 .anyRequest().authenticated()
             )
-            .formLogin(form -> form
+        .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
-                .failureUrl("/login?error")
+                .failureHandler(customAuthFailureHandler)
                 .permitAll()
-            )
+        )
+
             .exceptionHandling(ex -> ex
                     .accessDeniedPage("/access-denied")
                 )

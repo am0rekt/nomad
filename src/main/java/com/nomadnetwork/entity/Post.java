@@ -49,6 +49,8 @@ public class Post {
     private String imageName;
     private String imagePath;
     private String imageType;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Report> reports;
     
     private LocalDateTime createdAt;
     @PrePersist

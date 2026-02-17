@@ -1,6 +1,7 @@
 package com.nomadnetwork.services;
 
 import com.nomadnetwork.dto.PostDTO;
+import com.nomadnetwork.entity.Post;
 import com.nomadnetwork.entity.User;
 
 import java.util.List;
@@ -15,5 +16,7 @@ public interface PostService {
     public PostDTO updatePost(Long id, PostDTO postDTO);
     public List<PostDTO> getPostsByPlaceId(Long placeID);
     List<PostDTO> getPostsByUserId(Long userId);
+    public Post getPostEntityById(Long id);
+    public void deletePostByAdmin(Long id);
 }
 

@@ -1,5 +1,8 @@
 package com.nomadnetwork.dto;
 import com.nomadnetwork.entity.User;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +14,12 @@ public class UserDTO {
 	private String userName;
 	private String bio;
 	private String email;
+	
+	@NotBlank
+    @Pattern(
+        regexp = "^\\+[1-9][0-9]{7,14}$",
+        message = "Phone number must be in international format (+countrycode...)"
+    )
 	private String phone;
 	private String role;
 	private boolean enabled;
