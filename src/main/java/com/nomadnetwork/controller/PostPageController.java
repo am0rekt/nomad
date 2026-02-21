@@ -69,6 +69,7 @@ public class PostPageController {
     public String showCreatePostForm(Model model) {
         model.addAttribute("post", new PostDTO());
         model.addAttribute("places", placeService.getAllPlaces());
+        model.addAttribute("currentUser", userService.getCurrentUser());
         return "posts/create-post";  // templates/posts/create-post.html
     }
 
