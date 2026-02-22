@@ -17,6 +17,7 @@ import com.nomadnetwork.entity.Post;
 import com.nomadnetwork.entity.Report;
 import com.nomadnetwork.repository.PlaceRepo;
 import com.nomadnetwork.repository.ReportRepository;
+import com.nomadnetwork.repository.UserRepos;
 import com.nomadnetwork.services.AdminService;
 import com.nomadnetwork.services.DashboardService;
 import com.nomadnetwork.services.PostService;
@@ -44,6 +45,7 @@ public class AdminPageController {
 	@Autowired
 	private ReportService reportService;
 	private final PlaceRepo placeRepository;
+	@Autowired UserRepos userRepository;
 	
 	
 	@GetMapping("/dashboard")
@@ -146,6 +148,16 @@ public class AdminPageController {
         reportRepository.deleteAll(reports);
 
         return "redirect:/admin/reports";
+    }
+    
+    @PostMapping("/delete-user/{id}")
+    public String deleteUser(@PathVariable Long id) {
+
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+        }
+
+        return "redirect:/admin/users";
     }
 }
 

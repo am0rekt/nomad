@@ -2,7 +2,6 @@ package com.nomadnetwork.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nomadnetwork.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,9 +15,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userID;
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private List<Post> posts;
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+ private List<Post> posts;
 
     @Column(nullable = false,name = "username")
     private String userName;
@@ -42,4 +42,9 @@ public class User {
     
     @Column(nullable= false)
     private boolean deleted=false;
+    
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+ private List<Otp> otps;
 }
