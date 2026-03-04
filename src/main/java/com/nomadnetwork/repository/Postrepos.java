@@ -23,4 +23,6 @@ public interface Postrepos extends JpaRepository<Post, Long> {
 	    List<Post> findByUserUserID(Long userID);
 	    
 	  List<Post> findByUserUserIDOrderByCreatedAtDesc(Long userID);
+	  List<Post> findByPlace_PlaceIDOrderByCreatedAtDesc(Long placeID);
+	  List<Post> findByUser_UserIDOrderByCreatedAtDesc(Long userID);
 }

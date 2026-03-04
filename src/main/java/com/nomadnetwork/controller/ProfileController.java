@@ -3,7 +3,9 @@ package com.nomadnetwork.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,9 @@ import com.nomadnetwork.entity.User;
 import com.nomadnetwork.repository.UserRepos;
 import com.nomadnetwork.services.PostService;
 import com.nomadnetwork.services.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class ProfileController {
@@ -46,13 +51,16 @@ public class ProfileController {
 	    }
 	    
 	    @PostMapping("/delete-account")
-	    public String deleteAccount(Authentication authentication) {
+	    @PreAuthorize("isAuthenticated()")
+	    public String deleteAccount(Authentication authentication,HttpServletRequest request,
+                HttpServletResponse response)throws Exception {
 
 	        String email = authentication.getName();
 
 	        User user = userRepos.findByEmail(email)
 	                .orElseThrow(() -> new RuntimeException("User not found"));
-
+	        
+	        new SecurityContextLogoutHandler().logout(request, response, authentication);
 	        userRepos.delete(user);
 
 	        return "redirect:/login";

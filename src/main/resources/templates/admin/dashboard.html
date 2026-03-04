@@ -81,10 +81,25 @@
 
 		</a>
 
-        <div class="bg-white p-6 rounded shadow">
-            <p class="text-gray-500">Scam Reports</p>
-            <h2 class="text-3xl font-bold">0</h2>
-        </div>
+		<a th:href="@{/admin/scams}" 
+		   class="block bg-white p-6 rounded shadow hover:shadow-xl hover:scale-105 transition transform duration-200">
+
+		    <div class="flex items-center justify-between">
+		        <div>
+		            <p class="text-gray-500">Scam Reports</p>
+		            <h2 class="text-3xl font-bold" th:text="${scamCount}">0</h2>
+		        </div>
+
+		        <!-- Warning Icon -->
+		        <svg xmlns="http://www.w3.org/2000/svg" 
+		             class="h-10 w-10 text-red-500" 
+		             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+		                  d="M12 9v2m0 4h.01M10.29 3.86l-7.21 12.48A2 2 0 004.79 20h14.42a2 2 0 001.71-3.66L13.71 3.86a2 2 0 00-3.42 0z" />
+		        </svg>
+		    </div>
+
+		</a>
 		
 		<a th:href="@{/admin/reports}" 
 		   class="block bg-white p-6 rounded shadow hover:shadow-xl hover:scale-105 transition transform duration-200">

@@ -210,4 +210,19 @@ footer {
 .post-link {
     display: block;
 }
+.scam-container {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+    border-radius: 8px;
+}
+
+.scam-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scam-container::-webkit-scrollbar-thumb {
+    background: #f87171;
+    border-radius: 10px;
+}
 

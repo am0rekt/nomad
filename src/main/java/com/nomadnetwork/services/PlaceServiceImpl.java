@@ -18,13 +18,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.nomadnetwork.dto.PlaceDTO;
 import com.nomadnetwork.entity.Place;
 import com.nomadnetwork.repository.PlaceRepo;
+import com.nomadnetwork.repository.ReportRepository;
+import com.nomadnetwork.repository.ScamAlertRepository;
 
 @Service
 public class PlaceServiceImpl implements PlaceService {
 	
 	@Autowired
     private PlaceRepo placeRepository;
-
+	@Autowired
+	private ScamAlertRepository scamAlertRepository;
+	
+	
 	@Override
     public List<PlaceDTO> getAllPlaces() {
         return placeRepository.findAll()
@@ -49,6 +54,9 @@ public class PlaceServiceImpl implements PlaceService {
 	        dto.setDescription(place.getDescription());
 	        dto.setLatitude(place.getLatitude());
 	        dto.setLongitude(place.getLongitude());
+	        dto.setScamCount(
+	        		scamAlertRepository.countByPlace_PlaceID(place.getPlaceID())
+	        	);
 	        return dto;
 	    }
 	 @Override
@@ -74,14 +82,23 @@ public class PlaceServiceImpl implements PlaceService {
 	     return convertToDTO(saved);
 	 }
 	 
-	 @Override
-	    public List<PlaceDTO> searchPlaces(String keyword) {
-	        return placeRepository.findByNameContainingIgnoreCase(keyword)
-	                              .stream()
-	                              .map(this::convertToDTO)
-	                              .toList();
-	    }
+	 public List<PlaceDTO> searchPlaces(String keyword) {
 
+		 List<Place> places = placeRepository.findByNameContainingIgnoreCase(keyword);
+
+		    return places.stream().map(place -> {
+
+		        PlaceDTO dto = convertToDTO(place);
+
+		        long scamCount =
+		                scamAlertRepository.countByPlace_PlaceID(place.getPlaceID());
+
+		        dto.setScamCount(scamCount);
+
+		        return dto;
+
+		    }).toList();
+		}
 
 	 @Override
 	 public Place findOrCreatePlace(String name, String country) {

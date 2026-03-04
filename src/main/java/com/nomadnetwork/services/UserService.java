@@ -11,4 +11,5 @@ public interface UserService {
     User findByEmail(String email);
     User getCurrentUser();
     void updateProfile(User updatedUser);
+    User getUserById(Long id);
 }

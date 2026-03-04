@@ -5,51 +5,105 @@
     <title th:text="${place.name} + ' - Details'">Place Details</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100">
-    <div class="container mx-auto p-6">
 
-        <!-- Place Name -->
-        <h1 class="text-3xl font-bold mb-2" th:text="${place.name}">Place Name</h1>
+<div class="container mx-auto p-6">
 
-        <!-- Place Description -->
-        <p class="text-gray-700 mb-6" th:text="${place.description}">Place description here...</p>
+    <!-- Place Name -->
+    <h1 class="text-3xl font-bold mb-2"
+        th:text="${place.name}">Place Name</h1>
 
-        <!-- Posts Section -->
-        <h2 class="text-2xl font-semibold mb-4">Posts</h2>
+    <!-- Place Description -->
+    <p class="text-gray-700 mb-6"
+       th:text="${place.description}">
+        Place description here...
+    </p>
 
-        <div th:if="${#lists.isEmpty(posts)}" class="text-gray-500 mb-4">
-            No posts available for this place.
-        </div>
+    <!-- ================= SCAM ALERTS SECTION ================= -->
+    <h2 class="text-2xl font-semibold text-red-600 mb-4">
+        ⚠ Scam Alerts
+    </h2>
 
-        <div th:if="${!#lists.isEmpty(posts)}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- No scams message -->
+    <div th:if="${#lists.isEmpty(scams)}"
+         class="text-gray-500 mb-6">
+        No scam alerts reported for this place.
+    </div>
 
-            <div th:each="post : ${posts}" class="bg-white p-4 rounded shadow">
+    <!-- Scrollable scam container -->
+    <div th:if="${!#lists.isEmpty(scams)}"
+         class="mb-8"
+         style="max-height: 300px; overflow-y: auto; padding-right: 8px;">
 
-                <!-- Post Title -->
-                <h3 class="text-lg font-semibold mb-2" th:text="${post.title}">Post Title</h3>
+        <div th:each="scam : ${scams}"
+             class="bg-red-50 border border-red-300 rounded-lg p-4 shadow mb-4">
 
-                <!-- Post Content -->
-                <p class="text-gray-700 mb-2" th:text="${post.content}">Post content...</p>
+            <h3 class="text-lg font-semibold text-red-700"
+                th:text="${scam.title}"></h3>
 
-                <!-- Post Image -->
-				<div class="mb-2">
-				    <img th:src="${post.postUrl}" alt="Post Image" class="w-full h-auto rounded shadow-sm">
-				</div>
+            <!-- break-all prevents long GGGGGGG text overflow -->
+            <p class="text-gray-700 mt-2 break-all"
+               th:text="${scam.description}"></p>
 
-                <!-- Posted by -->
-                <p class="text-sm text-gray-500 mt-2">
-                    Posted by <span th:text="${post.userName}">User</span>
-                </p>
+            <p class="text-sm text-gray-500 mt-2">
+                Reported by 
+                <span th:text="${scam.createdBy.userName}"></span>
+                • 
+                <span th:text="${#temporals.format(scam.createdAt, 'dd MMM yyyy')}"></span>
+            </p>
 
-            </div>
-        </div>
-
-        <!-- Back Link -->
-        <div class="mt-6">
-            <a th:href="@{/}" class="text-blue-500 hover:underline">← Back to Home</a>
         </div>
 
     </div>
+    <!-- ================= END SCAM SECTION ================= -->
+
+
+    <!-- ================= POSTS SECTION ================= -->
+    <div th:if="${!#lists.isEmpty(posts)}"
+         class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <a th:each="post : ${posts}"
+           th:href="@{/posts/{postID}(postID=${post.postID})}"
+           class="block bg-white rounded-lg shadow-md hover:shadow-lg transition overflow-hidden">
+
+            
+
+            <img th:if="${post.postUrl != null}"
+                 th:src="${post.postUrl}"
+                 class="w-full h-56 object-cover">
+
+            <div class="p-4">
+
+                <h3 class="text-lg font-semibold mb-2"
+                    th:text="${post.title}"></h3>
+
+                <p class="text-gray-700 text-sm mb-3"
+                   th:text="${post.content}"></p>
+
+                <p class="text-xs text-gray-500">
+                    Posted by 
+                    <span th:text="${post.userName}"></span>
+                </p>
+
+            </div>
+
+        </a>
+
+    </div>
+    <!-- ================= END POSTS SECTION ================= -->
+
+
+    <!-- Back Link -->
+    <div class="mt-6">
+        <a th:href="@{/}"
+           class="text-blue-500 hover:underline">
+            ← Back to Home
+        </a>
+    </div>
+
+</div>
+
 </body>
 </html>
 

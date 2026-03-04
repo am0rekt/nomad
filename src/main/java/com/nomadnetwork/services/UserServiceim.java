@@ -78,4 +78,10 @@ public class UserServiceim implements UserService {
 
 	    userRepo.save(user);
 	}
+
+	@Override
+	public User getUserById(Long id) {
+	    return userRepo.findById(id)
+	            .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+	}
 }

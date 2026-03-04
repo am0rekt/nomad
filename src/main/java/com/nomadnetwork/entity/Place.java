@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,4 +35,7 @@ public class Place {
     @OneToMany(mappedBy = "place")
     @JsonManagedReference
     private List<Post> posts;
+    
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
+    private List<ScamAlert> scamAlerts;
 }

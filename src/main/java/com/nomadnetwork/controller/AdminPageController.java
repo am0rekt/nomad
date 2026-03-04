@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.nomadnetwork.entity.Place;
 import com.nomadnetwork.entity.Post;
 import com.nomadnetwork.entity.Report;
+import com.nomadnetwork.entity.ScamAlert;
 import com.nomadnetwork.repository.PlaceRepo;
 import com.nomadnetwork.repository.ReportRepository;
+import com.nomadnetwork.repository.ScamAlertRepository;
 import com.nomadnetwork.repository.UserRepos;
 import com.nomadnetwork.services.AdminService;
 import com.nomadnetwork.services.DashboardService;
@@ -47,6 +49,9 @@ public class AdminPageController {
 	private final PlaceRepo placeRepository;
 	@Autowired UserRepos userRepository;
 	
+	@Autowired
+	private ScamAlertRepository scamAlertRepository;
+	
 	
 	@GetMapping("/dashboard")
     public String adminDashboard(Model model) {
@@ -56,6 +61,12 @@ public class AdminPageController {
 	     model.addAttribute("placeCount", dashboardService.getPlaceCount());
 	     model.addAttribute("reportCount", dashboardService.getReportCount());
 	     model.addAttribute("recentPosts", adminService.getRecentPosts());
+	     long scamCount = scamAlertRepository.count();
+	     long reportCount = reportRepository.count(); // if you already have this
+
+	     model.addAttribute("scamCount", scamCount);
+	     model.addAttribute("reportCount", reportCount);
+
 	     
 	     model.addAttribute("reportsCount", reportService.getReportCount());
 	     model.addAttribute("reports", reportService.getAllReports());
@@ -118,7 +129,11 @@ public class AdminPageController {
 
 
     @GetMapping("/scams")
-    public String manageScams() {
+    public String viewScams(Model model) {
+
+        List<ScamAlert> scams = scamAlertRepository.findAll();
+        model.addAttribute("scams", scams);
+
         return "admin/scams";
     }
     

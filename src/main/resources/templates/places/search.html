@@ -35,18 +35,25 @@
 	      <p class="text-gray-700"
 	         th:text="${place.description}"></p>
 
-	      <p class="text-sm text-blue-500 mt-2">
+	      <!-- 🔴 Scam Alert Section -->
+	      <div th:if="${place.scamCount > 0}"
+	           class="text-red-600 font-semibold mt-3 bg-red-50 p-2 rounded">
+	          ⚠ <span th:text="${place.scamCount}"></span>
+	          Scam Alert(s) Reported
+	      </div>
+
+	      <div th:if="${place.scamCount == 0}"
+	           class="text-green-600 mt-3">
+	          ✔ No Scam Reports
+	      </div>
+
+	      <p class="text-sm text-blue-500 mt-3">
 	          View posts →
 	      </p>
+
 	  </a>
 
 	</div>
-
-    <div class="mt-6">
-		
-      <a th:href="@{/}" class="text-blue-500 hover:underline">← Back to Home</a>
-    </div>
-  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {

@@ -22,4 +22,5 @@ public interface ReportRepository extends JpaRepository<Report, Long>{
 		List<Report> findByPost(Post post);
 		
 		List<Report> findAllByOrderByReportedAtDesc();
+		
 }

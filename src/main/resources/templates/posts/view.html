@@ -83,7 +83,10 @@
                     </p>
 
                     <p class="text-muted small mb-4">
-                        By <span th:text="${post.userName}">User</span> ·
+                        By 						<a th:href="@{/users/{id}(id=${post.userID})}"
+						   class="text-blue-600 hover:underline"
+						   th:text="${post.userName}">
+						</a> ·
                         <span th:text="${#temporals.format(post.createdAt,'dd MMM yyyy')}">
                             Date
                         </span>

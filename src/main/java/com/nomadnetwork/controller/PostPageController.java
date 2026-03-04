@@ -78,16 +78,13 @@ public class PostPageController {
             @ModelAttribute("post") PostDTO postDTO,
             @RequestParam(value = "image", required = false) MultipartFile image) {
     	
-    	System.out.println("IMAGE NULL? " + (image == null));
-        System.out.println("IMAGE EMPTY? " + (image != null && image.isEmpty()));
-        System.out.println("IMAGE NAME: " + 
-            (image != null ? image.getOriginalFilename() : "NO IMAGE"));
-
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
     	
     	String username = auth.getName();
 
     	postService.savePost(postDTO, image, username);
+    	
+    	
 
         return "redirect:/profile";
     }

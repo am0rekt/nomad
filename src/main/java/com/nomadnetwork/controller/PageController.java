@@ -1,14 +1,18 @@
 package com.nomadnetwork.controller;
 
 import com.nomadnetwork.dto.PlaceDTO;
-
+import com.nomadnetwork.dto.PostDTO;
+import com.nomadnetwork.entity.User;
+import com.nomadnetwork.repository.ScamAlertRepository;
 import com.nomadnetwork.services.MediaService;
 import com.nomadnetwork.services.PlaceService;
 import com.nomadnetwork.services.PostService;
+import com.nomadnetwork.services.ScamAlertService;
 import com.nomadnetwork.services.UserService;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,9 @@ public class PageController {
     private final PlaceService placeService;
     private final PostService postService;
     private final UserService userService;
+    
+    @Autowired
+    private ScamAlertService scamAlertService;
 
     public PageController(MediaService mediaService,
     		PlaceService placeService,
@@ -64,8 +71,21 @@ public class PageController {
 
         model.addAttribute("posts",
                 postService.getPostsByPlaceId(placeId));
+        model.addAttribute("scams", scamAlertService.getScamsByPlaceId(placeId));
 
         return "places/place-details";
+    }
+    @GetMapping("/users/{id}")
+    public String viewUserProfile(@PathVariable Long id, Model model) {
+
+        User user = userService.getUserById(id);   // make sure this exists
+
+        List<PostDTO> posts = postService.getPostsByUserId(id);
+
+        model.addAttribute("user", user);
+        model.addAttribute("posts", posts);
+
+        return "user/profile";
     }
 }
 

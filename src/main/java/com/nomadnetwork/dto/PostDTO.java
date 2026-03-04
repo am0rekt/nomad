@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.nomadnetwork.entity.Post;
+import com.nomadnetwork.entity.ScamAlert;
 import com.nomadnetwork.entity.User;
 
 import jakarta.validation.constraints.NotBlank;
@@ -35,6 +36,10 @@ public class PostDTO {
     private String imageName;
     private String imagePath;
     private String imageType;
+    
+    private String scamTitle;
+    private String scamDescription;
+    private ScamAlert.Severity scamSeverity;
 
     
 

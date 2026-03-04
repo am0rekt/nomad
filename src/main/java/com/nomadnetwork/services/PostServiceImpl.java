@@ -11,11 +11,13 @@ import com.nomadnetwork.dto.PostDTO;
 import com.nomadnetwork.entity.Media;
 import com.nomadnetwork.entity.Place;
 import com.nomadnetwork.entity.Post;
+import com.nomadnetwork.entity.ScamAlert;
 import com.nomadnetwork.entity.User;
 import com.nomadnetwork.enums.MediaType;
 import com.nomadnetwork.exception.PostNotFoundException;
 import com.nomadnetwork.repository.MediaRepo;
 import com.nomadnetwork.repository.Postrepos;
+import com.nomadnetwork.repository.ScamAlertRepository;
 import com.nomadnetwork.repository.UserRepos;
 
 import jakarta.transaction.Transactional;
@@ -38,6 +40,9 @@ public class PostServiceImpl implements PostService {
     
     @Autowired
     private MediaRepo mediaRepo;
+    
+    @Autowired
+    ScamAlertRepository scamAlertRepository;
     
     @Autowired
     private PlaceServiceImpl placeService;
@@ -131,64 +136,89 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostDTO savePost(PostDTO postDTO,MultipartFile image,String username) {
+    public PostDTO savePost(PostDTO postDTO, MultipartFile image, String username) {
+
         Post post = new Post();
-        
+
+        // ---------------- IMAGE UPLOAD ----------------
         if (image != null && !image.isEmpty()) {
             try {
-                // Create uploads directory if not exists
                 Path uploadDir = Paths.get("uploads/places").toAbsolutePath().normalize();
                 Files.createDirectories(uploadDir);
 
-                // Generate unique filename
                 String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
                 Path targetLocation = uploadDir.resolve(fileName);
 
-                // Copy the file to the uploads directory
                 Files.copy(image.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-                // ✅ Store both the filesystem path and web-accessible path
                 postDTO.setImageName(fileName);
                 postDTO.setImagePath("uploads/places/" + fileName);
-                postDTO.setPostUrl("/uploads/places/" + fileName); // 🔗 public URL to access the image
+                postDTO.setPostUrl("/uploads/places/" + fileName);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+        // ---------------- BASIC POST DATA ----------------
         post.setPostUrl(postDTO.getPostUrl());
         post.setTitle(postDTO.getTitle());
         post.setDescription(postDTO.getDescription());
         post.setContent(postDTO.getContent());
         post.setCreatedAt(LocalDateTime.now());
 
-        // ✅ Set user if provided
+        // ---------------- USER ----------------
         User user = userRepo.findByEmail(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        post.setUser(user); 
 
-        // ✅ Set place if provided
-        if (postDTO.getPlaceName() != null && postDTO.getCountry() != null) {
-            Place place = placeService.findOrCreatePlace(postDTO.getPlaceName(), postDTO.getCountry());
+        post.setUser(user);
+
+        // ---------------- PLACE ----------------
+        Place place = null;
+
+        if (postDTO.getPlaceName() != null &&
+            !postDTO.getPlaceName().isBlank() &&
+            postDTO.getCountry() != null &&
+            !postDTO.getCountry().isBlank()) {
+
+            place = placeService.findOrCreatePlace(
+                    postDTO.getPlaceName(),
+                    postDTO.getCountry()
+            );
+
             post.setPlace(place);
         }
 
-        // ✅ Save post first
+        // ---------------- SAVE POST ----------------
         Post savedPost = postRep.save(post);
 
-        // ✅ Save media URLs if present
+        // ---------------- SCAM ALERT ----------------
+        if (postDTO.getScamTitle() != null &&
+            !postDTO.getScamTitle().isBlank() &&
+            place != null) {
+
+            ScamAlert scam = new ScamAlert();
+            scam.setTitle(postDTO.getScamTitle());
+            scam.setDescription(postDTO.getScamDescription());
+            scam.setSeverity(postDTO.getScamSeverity());
+            scam.setPlace(place);
+            scam.setCreatedBy(user);
+
+            scamAlertRepository.save(scam);
+        }
+
+        // ---------------- MEDIA ----------------
         if (postDTO.getMediaUrls() != null && !postDTO.getMediaUrls().isEmpty()) {
+
             for (String url : postDTO.getMediaUrls()) {
                 Media media = new Media();
                 media.setUrl(url);
-                media.setType(MediaType.IMAGE); // or VIDEO based on logic later
+                media.setType(MediaType.IMAGE);
                 media.setPost(savedPost);
                 mediaRepo.save(media);
             }
-            }
-        
-        
+        }
 
-        // ✅ Return the saved DTO
         return getPostById(savedPost.getPostID());
     }
 
@@ -240,11 +270,12 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     public List<PostDTO> getPostsByPlaceId(Long placeId) {
-        return postRep.findByPlace_PlaceID(placeId)
+        return postRep.findByPlace_PlaceIDOrderByCreatedAtDesc(placeId)
                 .stream()
                 .map(post -> {
                     PostDTO dto = new PostDTO();
                     dto.setTitle(post.getTitle());
+                    dto.setPostID(post.getPostID()); 
                     dto.setPostUrl(post.getPostUrl());
                     dto.setDescription(post.getDescription());
                     dto.setUserName(post.getUser().getUserName()); // set username here
