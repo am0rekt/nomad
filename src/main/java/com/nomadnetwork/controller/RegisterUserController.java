@@ -6,6 +6,7 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,13 +15,19 @@ import com.nomadnetwork.dto.UserRegistrationDTO;
 import com.nomadnetwork.entity.Otp;
 import com.nomadnetwork.entity.User;
 import com.nomadnetwork.repository.OtpRepository;
+import com.nomadnetwork.repository.UserRepos;
 import com.nomadnetwork.services.EmailService;
 import com.nomadnetwork.services.UserService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class RegisterUserController {
 	@Autowired
     private UserService userService;
+	
+	@Autowired 
+	private UserRepos userRepo;
 	
 	@Autowired
 	private OtpRepository otpRepository;
@@ -35,10 +42,23 @@ public class RegisterUserController {
 	 }
 	 
 	 @PostMapping("/register")
-	    public String registerUser(@ModelAttribute("userDTO") UserRegistrationDTO dto, Model model) {
+	    public String registerUser(@Valid @ModelAttribute("userDTO") UserRegistrationDTO dto,BindingResult result, Model model) {
+		 if (result.hasErrors()) {
+             return "register";
+         }
+		 
+		 if (userRepo.existsByUserName(dto.getUsername())) {
+			    result.rejectValue("username", null, "Username already taken");
+			    return "user/register";
+			}
+		 if (userRepo.existsByEmail(dto.getEmail())) {
+		        result.rejectValue("email", null, "Email already registered");
+		        return "user/register";
+		    }
 	        try {
 	            User user = userService.registerUser(dto); // Save user with enabled=false
 
+	            
 	            // Generate OTP
 	            String otpCode = String.valueOf(new Random().nextInt(900000) + 100000);
 	            Otp otp = new Otp();

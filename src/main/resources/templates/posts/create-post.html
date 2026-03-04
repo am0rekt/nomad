@@ -150,22 +150,24 @@
 				    </div>
 
 				    <!-- IMAGE -->
-				    <div class="mb-4">
-				        <label>Upload Image</label>
-				        <input type="file"
-				               name="image"
-				               class="form-control"
-				               accept="image/*"
-				               onchange="previewImage(event)">
+					<div class="mb-4">
+					    <label>Upload Image</label>
 
-				        <p id="fileName" class="small text-muted mt-2"></p>
+					    <input type="file"
+					           name="image"
+					           class="form-control"
+					           accept=".jpg,.jpeg,.png"
+					           required
+					           onchange="previewImage(event)">
 
-				        <div class="mt-3 text-center">
-				            <img id="imagePreview"
-				                 class="img-fluid rounded shadow-sm border"
-				                 style="max-height: 350px; display: none; object-fit: cover;">
-				        </div>
-				    </div>
+					    <p id="fileName" class="small text-muted mt-2"></p>
+
+					    <div class="mt-3 text-center">
+					        <img id="imagePreview"
+					             class="img-fluid rounded shadow-sm border"
+					             style="max-height: 350px; display: none; object-fit: cover;">
+					    </div>
+					</div>
 
 				    <!-- SCAM SECTION -->
 				    <div class="p-3 mb-4 rounded"

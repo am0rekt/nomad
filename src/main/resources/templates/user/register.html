@@ -78,19 +78,50 @@
 
 	    <form th:action="@{/register}" th:object="${userDTO}" method="post">
 
-	        <input type="text" th:field="*{username}" 
-	               class="form-control mb-3" placeholder="Username" required />
+			<input type="text"
+			       th:field="*{username}"
+			       class="form-control mb-2"
+			       placeholder="Username"
+			       required
+			       minlength="3"
+			       maxlength="20"
+			       pattern="^[a-z0-9_]+$"
+			       title="Username must contain only lowercase letters, numbers, and underscore. No spaces or capital letters."
+			       oninput="this.value = this.value.toLowerCase().replace(/\s/g, '')">
+			       
+			<div th:if="${#fields.hasErrors('username')}"
+			     th:errors="*{username}"
+			     class="text-danger small">
+			</div>
 
 	        <input type="email" th:field="*{email}" 
 	               class="form-control mb-3" placeholder="Email" required />
+				   <div th:if="${#fields.hasErrors('email')}"
+				        th:errors="*{email}"
+				        class="text-danger small">
+				   </div>
 
-	        <input type="tel" th:field="*{phone}"
-	               class="form-control mb-3"
-	               placeholder="+919876543210"
-	               pattern="^\+[1-9][0-9]{7,14}$"
-	               maxlength="16"
-	               required />
+				   <div class="mb-3">
+				       <label>Phone Number</label>
 
+				       <div class="input-group">
+				           <span class="input-group-text">+91</span>
+
+				           <input type="text"
+				                  th:field="*{phone}"
+				                  class="form-control"
+				                  maxlength="10"
+				                  pattern="[0-9]{10}"
+				                  inputmode="numeric"
+				                  placeholder="Enter 10 digit number"
+				                  required>
+				       </div>
+
+				       <div th:if="${#fields.hasErrors('phone')}"
+				            th:errors="*{phone}"
+				            class="text-danger small">
+				       </div>
+				   </div>
 	        <input type="password" id="password"
 	               th:field="*{password}"
 	               class="form-control mb-2"

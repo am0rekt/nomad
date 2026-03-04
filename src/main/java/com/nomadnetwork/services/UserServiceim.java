@@ -46,7 +46,8 @@ public class UserServiceim implements UserService {
         User user = new User();
         user.setUserName(dto.getUsername());
         user.setEmail(dto.getEmail());
-        user.setPhone(dto.getPhone());
+        String formattedPhone = "+91" + dto.getPhone();
+        user.setPhone(formattedPhone);
 
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
 

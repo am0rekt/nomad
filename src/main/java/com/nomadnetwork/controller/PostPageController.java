@@ -76,15 +76,27 @@ public class PostPageController {
     @PostMapping("/create")
     public String createPost(
             @ModelAttribute("post") PostDTO postDTO,
-            @RequestParam(value = "image", required = false) MultipartFile image) {
-    	
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
-    	
-    	String username = auth.getName();
+            @RequestParam("image") MultipartFile image,
+            Model model) {
 
-    	postService.savePost(postDTO, image, username);
-    	
-    	
+        if (image.isEmpty()) {
+            model.addAttribute("error", "Image is required.");
+            return "createPost";
+        }
+
+        String contentType = image.getContentType();
+
+        if (!contentType.equals("image/jpeg") &&
+            !contentType.equals("image/png")) {
+
+            model.addAttribute("error", "Only JPG, JPEG, and PNG files are allowed.");
+            return "createPost";
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        postService.savePost(postDTO, image, username);
 
         return "redirect:/profile";
     }
