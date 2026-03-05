@@ -27,4 +27,18 @@ public class EmailServiceimpl implements EmailService {
 
         mailSender.send(message);
     }
+    @Override
+    public void sendResetEmail(String toEmail, String resetLink) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Password Reset Request");
+        message.setText(
+                "Click the link below to reset your password:\n\n"
+                + resetLink +
+                "\n\nThis link expires in 10 minutes."
+        );
+
+        mailSender.send(message);
+    }
 }

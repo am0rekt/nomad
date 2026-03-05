@@ -50,7 +50,7 @@ public class SecurityConfig {
                 ).permitAll()
 
                 // ✅ public pages
-                .requestMatchers("/register", "/otp/**", "/login","/page", "/verify").permitAll()
+                .requestMatchers("/register", "/otp/**", "/login","/page", "/verify","/forgot-password").permitAll()
 
                 // ✅ admin only
                 .requestMatchers("/admin/**").hasRole("ADMIN")

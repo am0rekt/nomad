@@ -35,17 +35,25 @@
 
 
 
-            <!-- Delete Account (ONLY PROFILE OWNER) -->
-			<form sec:authorize="isAuthenticated() and principal.username == #vars.user.email"
-			      th:action="@{/delete-account}"
-			      method="post">
-				  
-                <button type="submit"
-                        onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.')"
-                        class="bg-red-600 px-3 py-1 rounded text-sm hover:bg-red-700 transition">
-                    Delete
-                </button>
-            </form>
+				<!-- Delete Account & Forgot Password (ONLY PROFILE OWNER) -->
+				<form sec:authorize="isAuthenticated() and principal.username == #vars.user.email"
+				      th:action="@{/delete-account}"
+				      method="post"
+				      class="flex items-center gap-4">
+
+				    <!-- Delete Button -->
+				    <button type="submit"
+				            onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.')"
+				            class="bg-red-600 px-3 py-1 rounded text-sm hover:bg-red-700 transition">
+				        Delete
+				    </button>
+
+				    <!-- Forgot Password Button -->
+				    <a th:href="@{/forgot-password}"
+				       class="bg-blue-600 px-3 py-1 rounded text-sm text-white hover:bg-blue-700 transition">
+				        Forgot Password
+				    </a>
+				</form>
 
             <!-- Logout -->
             <a sec:authorize="isAuthenticated()"
